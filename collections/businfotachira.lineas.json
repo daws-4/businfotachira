@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "66d621c45dcc356b1486ed0a"
+  },
+  "nombre": "Línea Intercomunal 01",
+  "username": "LineaIntercomunal_1",
+  "email": "lineaintercomunal@gmail.com",
+  "password": "$2a$10$k20Htn8g6kiGE7DKmue8luSYEHrGri/.4i6mcBk4zM2ftyCjTS9sy",
+  "telefono": [
+    "04120691296",
+    "02763477650"
+  ],
+  "direccion": "Av. Universidad al lado del estadio polideportivo",
+  "rol": 0,
+  "createdAt": {
+    "$date": "2024-09-02T20:36:20.985Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-02T20:36:20.985Z"
+  },
+  "__v": 0
+}]

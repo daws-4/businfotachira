@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "66d616ab5dcc356b1486ed02"
+  },
+  "username": "davidvp_18",
+  "password": "$2a$10$9la2pVZuTC4SpF8AgJkM/.rtNi7ThYn0YjvITBU1Gptv7ZaXCWGYG",
+  "rol": 5,
+  "createdAt": {
+    "$date": "2024-09-02T19:48:59.274Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-02T19:49:58.163Z"
+  },
+  "__v": 0
+}]

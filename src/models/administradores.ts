@@ -15,7 +15,7 @@ const administradores = new Schema(
     },
     rol: {
       type: Number,
-      default: 5,
+      default: 1,
       required: true,
       trim: true,
     },
