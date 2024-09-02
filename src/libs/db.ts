@@ -7,7 +7,7 @@ export async function connectDB() {
         return
     }
 
-    const db = await connect('mongodb://localhost:27017/test', )
+    const db = await connect('mongodb://localhost:27017/businfotachira', )
     console.log(db.connection?.db?.databaseName)
     conn.isConnected = db.connections[0].readyState === 1;
 }
