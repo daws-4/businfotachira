@@ -20,14 +20,9 @@ export async function GET(request: any, {params}: {params: {name: string}}) {
             }
         } catch (error) {
             return NextResponse.json((error as Error).message, { status: 400 });
-        }
-        
-        
+        }  
      }
-
-     
 export async function PUT(request:any, {params}: {params:{name:string}}){
-
   try {
       const { username, contraseña, rol, email, telefono, direccion, nombre } =
         await request.json();
@@ -43,8 +38,6 @@ export async function PUT(request:any, {params}: {params:{name:string}}){
   }
     return NextResponse.json({message: "Actualizando Datos"});
 }
-
-
 export async function DELETE(request:any, {params}: {params:{name:string}}){
   try {
     const deleteAdmin = await lineas.findOneAndDelete({
@@ -61,4 +54,3 @@ export async function DELETE(request:any, {params}: {params:{name:string}}){
     return NextResponse.json((error as Error).message, { status: 400 });
   }
 }
-
