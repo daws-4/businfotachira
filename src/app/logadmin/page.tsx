@@ -15,14 +15,16 @@ import {
 
 
 export default function Home() {
+  const [user, setUser] = useState<any>({});
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const router = useRouter();
-
   const [credencials, setCredencials] = useState({
     username: "",
     contraseña: "",
   })
+
+
 
   const handleChange = (e: { target: { value:string, name:string }; }) => {
     setCredencials({
@@ -36,6 +38,10 @@ export default function Home() {
       try{
         const response =await axios.post('/api/auth/admins', credencials)
     console.log(response)
+    
+      const usuario = await axios.get("/api/auth/cookie");
+      setUser(usuario);
+      console.log(usuario);
 
     if(response.status === 200){
         setShowSuccessToast(true);
@@ -54,7 +60,7 @@ export default function Home() {
       });
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(`/dashboard`);
       }, 100);
 
       setShowSuccessToast(false);

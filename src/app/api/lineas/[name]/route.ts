@@ -9,7 +9,6 @@ export async function GET(request: any, {params}: {params: {name: string}}) {
             const adminFound = await lineas.findOne({
               username: params.name,
             });
-            console.log(adminFound);
             if (!adminFound) {
               return NextResponse.json(
                 { message: "Linea no encontrada" },
@@ -32,7 +31,6 @@ export async function PUT(request:any, {params}: {params:{name:string}}){
         { username, password, rol, email, telefono, direccion, nombre },
         { new: true }
       );
-      console.log(updateAdmin);
   } catch (error) {
     return NextResponse.json((error as Error).message, { status: 400 });
   }
@@ -43,7 +41,6 @@ export async function DELETE(request:any, {params}: {params:{name:string}}){
     const deleteAdmin = await lineas.findOneAndDelete({
       username: params.name,
     });
-    console.log(deleteAdmin);
     if (!deleteAdmin) {
       return NextResponse.json(
         { message: "Linea no encontrada" },

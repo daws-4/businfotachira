@@ -15,6 +15,7 @@ import {
 
 
 export default function Home() {
+  const [user, setUser] = useState<any>({});
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const router = useRouter();
@@ -34,6 +35,10 @@ export default function Home() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
       try{const response =await axios.post('/api/auth/login', credencials)
+      const usuario = await axios.get("/api/auth/cookie");
+      setUser(usuario);
+      console.log(response)
+      console.log(usuario)
 
     if(response.status === 200){
         setShowSuccessToast(true);
@@ -52,7 +57,7 @@ export default function Home() {
       });
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(`/dashboard/${user.data.username}`);
       }, 100);
 
       setShowSuccessToast(false);

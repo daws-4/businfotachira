@@ -2,13 +2,15 @@
 import React, { useState, ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-
-export default function DefaultLayout({
-  children,
-}: {
+interface DefaultLayoutProps {
+  params: { linea: any };
   children: React.ReactNode;
-}) {
+}
+
+
+export default function DefaultLayout({ params, children }: DefaultLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const param = params
   return (
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
@@ -20,7 +22,7 @@ export default function DefaultLayout({
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col lg:ml-72.5">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} params={param} />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}

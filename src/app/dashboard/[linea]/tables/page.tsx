@@ -12,9 +12,10 @@ export const metadata: Metadata = {
     "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const TablesPage = () => {
+const TablesPage = ({ params }: { params: { linea: any } }) => {
+  const param = params
   return (
-    <DefaultLayout>
+    <DefaultLayout params={param}>
       <Breadcrumb pageName="Tables" />
 
       <div className="flex flex-col gap-10">
