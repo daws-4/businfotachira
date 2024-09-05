@@ -8,9 +8,7 @@ export async function GET(
 ) {
   connectDB();
   try {
-    const adminFound = await posts.findOne({
-      id: params.pos,
-    });
+    const adminFound = await posts.findById(params.pos);
     console.log(adminFound);
     if (!adminFound) {
       return NextResponse.json(
@@ -29,10 +27,10 @@ export async function PUT(
   { params }: { params: { pos: string } }
 ) {
   try {
-    const { id, url, linea, titulo, texto } = await request.json();
+    const { url, linea, titulo, texto } = await request.json();
     const updateAdmin = await posts.findOneAndUpdate(
-      { id: params.pos },
-      { id, url, linea, titulo, texto },
+      { _id: params.pos },
+      {url, linea, titulo, texto },
       { new: true }
     );
     console.log(updateAdmin);
@@ -47,7 +45,7 @@ export async function DELETE(
 ) {
   try {
     const deleteAdmin = await posts.findOneAndDelete({
-      id: params.pos,
+      _id: params.pos,
     });
     console.log(deleteAdmin);
     if (!deleteAdmin) {

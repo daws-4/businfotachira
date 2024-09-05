@@ -16,7 +16,7 @@ export default function DefaultLayout({ params, children }: DefaultLayoutProps) 
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex">
         {/* <!-- ===== Sidebar Start ===== --> */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} params={param} />
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}

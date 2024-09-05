@@ -1,11 +1,9 @@
 import { Schema, model, models } from "mongoose";
-
+import { v4 as uuidv4 } from "uuid";
 const posts = new Schema(
   {
-    id: {
+    url: {
       type: String,
-      required: true,
-      unique: true,
       trim: true,
     },
     linea: {

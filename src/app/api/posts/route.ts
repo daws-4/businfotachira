@@ -4,8 +4,8 @@ import posts from "@/models/posts";
 connectDB();
 export async function POST(request: any) {
   try {
-    const { id, url, linea, titulo, texto } = await request.json();
-    const newUnidad = new posts({ id, url, linea, titulo, texto });
+    const { url, linea, titulo, texto } = await request.json();
+    const newUnidad = new posts({ url, linea, titulo, texto });
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);

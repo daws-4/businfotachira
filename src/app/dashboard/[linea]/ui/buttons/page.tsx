@@ -9,9 +9,10 @@ export const metadata: Metadata = {
     "This is Next.js Buttons page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const Buttons = () => {
+const Buttons = ({ params }: { params: { linea: any }}) => {
+  const param = params;
   return (
-    <DefaultLayout>
+    <DefaultLayout params ={param}>
       <Breadcrumb pageName="Buttons" />
 
       {/* <!-- Normal Button Items --> */}

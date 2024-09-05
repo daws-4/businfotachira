@@ -1,4 +1,4 @@
-import Cartelera from "@/components/Dashboard/Cartelera";
+import Post from "@/components/Dashboard/Post";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { ToastContainer } from "react-toastify";
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description: "Visualización de rutas de transporte público en el estado Táchira, Venezuela",
 };
 
-export default function Home({ params }: { params: { linea: any } }) {
+export default function Home({ params }: { params: { linea: any, poste: any  }    }) {
   const param = params;
   return (
     <>
       <DefaultLayout params = {param}>
-        <Cartelera params = {param}/>
+        <Post params = {param}/>
         <ToastContainer /> 
       </DefaultLayout>
     </>

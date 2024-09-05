@@ -1,4 +1,4 @@
-import Cartelera from "@/components/Dashboard/Cartelera";
+import Rutas from "@/components/Dashboard/Rutas";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { ToastContainer } from "react-toastify";
@@ -15,7 +15,7 @@ export default function Home({ params }: { params: { linea: any } }) {
   return (
     <>
       <DefaultLayout params = {param}>
-        <Cartelera params = {param}/>
+        <Rutas params = {param}/>
         <ToastContainer /> 
       </DefaultLayout>
     </>

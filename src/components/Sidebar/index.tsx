@@ -11,9 +11,12 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
+  params: { linea: any };
 }
-
-const menuGroups = [
+const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
+  const pathname = usePathname();
+  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const menuGroups = [
   {
     name: "MENU",
     menuItems: [
@@ -46,7 +49,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Cartelera",
-        route: "/dashboard/cartelera",
+        route: `/dashboard/${params.linea}`,
       },
       {
         icon: (
@@ -64,11 +67,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Rutas",
-        route: "#",
-        children: [
-          { label: "Form Elements", route: "/forms/form-elements" },
-          { label: "Form Layout", route: "/forms/form-layout" },
-        ]
+        route: `/dashboard/${params.linea}/rutas`,
       },
       {
         icon: (
@@ -85,11 +84,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Puntos de Referencia",
-        route: "#",
-        children: [
-          { label: "Form Elements", route: "/forms/form-elements" },
-          { label: "Form Layout", route: "/forms/form-layout" },
-        ]
+        route: `/dashboard/${params.linea}/pdr`,
       },
       {
         icon: (
@@ -106,7 +101,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Unidades",
-        route: "/dashboard/unidades",
+        route: `/dashboard/${params.linea}/unidades`,
       },
       {
         icon: (
@@ -126,7 +121,7 @@ const menuGroups = [
           </svg>
         ),
         label: "precios",
-        route: "/precios",
+        route: `/dashboard/${params.linea}/precios`,
       },
       {
         icon: (
@@ -156,7 +151,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Quejas y Sugerencias",
-        route: "/qys",
+        route: `/dashboard/${params.linea}/qys`,
       },
       {
         icon: (
@@ -191,7 +186,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Ajustes",
-        route: "/Ajustes",
+        route: `/dashboard/${params.linea}/ajustes`,
       },
     ],
   },
@@ -318,10 +313,6 @@ const menuGroups = [
     ],
   },
 ];
-
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const pathname = usePathname();
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
