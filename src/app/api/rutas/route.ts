@@ -4,8 +4,8 @@ import rutas from "@/models/rutas";
 connectDB();
 export async function POST(request: any) {
   try {
-    const { id, linea } = await request.json();
-    const newUnidad = new rutas({ id,linea});
+    const {nombre, linea, localidad, descripcion} = await request.json();
+    const newUnidad = new rutas({nombre, linea, localidad, descripcion});
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);

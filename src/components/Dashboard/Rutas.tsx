@@ -57,8 +57,8 @@ const Rutas: React.FC<CarteleraProps> = ({ params }) => {
   );
 })}
       </div>
-       <div className=" w-1/4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="  border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+       <div className=" w-50 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <Link href={`/dashboard/${params.linea}/rutas/post`} className="inline-flex items-center justify-center rounded-full bg-blue-700 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">Crear Ruta</Link>
             </div>  
           </div>

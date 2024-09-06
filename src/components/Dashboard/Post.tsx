@@ -52,8 +52,9 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
             router.push(`/dashboard/${params.linea}`);
         }
     }, [data, params.poste, params.linea, router]);
-    const handleDelete = async (id: string) => {
 
+
+    const handleDelete = async (id: string) => {
         const confirmDelete = window.confirm(
             "¿Estás seguro que deseas ELIMINAR este contrato?"
         );
@@ -63,7 +64,9 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                     method: 'DELETE',
                 });
                 if (response.ok) {
+
                     toast.success("Publicación eliminada correctamente.");
+                    router.push(`/dashboard/${params.linea}`);
                 } else {
                     toast.error("Error al eliminar la publicación.");
                 }
@@ -83,9 +86,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                 texto: text,
                 linea: params.linea,
             })
-            setTitle('');
-            setText('');
-
+            window.location.reload();
             toast.success("Publicación Actualizada con éxito!");
         } catch (error) {
             console.log(error);
@@ -126,7 +127,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
 
             </div>
 
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className=" w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
                         Editar Publicación
@@ -137,14 +138,14 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                         <form onSubmit={handleSubmit}>
                             <div className="pb-10">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Titulo
+                                    Editar Título
                                 </label>
                                 <input
 
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     type="text"
-                                    placeholder="Default Input"
+                                    placeholder="Editar Título"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 />
                             </div>
@@ -155,7 +156,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                                 rows={6}
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
-                                placeholder="Default textarea"
+                                placeholder="Editar Texto"
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             ></textarea>
                             <button

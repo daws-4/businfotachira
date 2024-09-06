@@ -9,7 +9,7 @@ export async function GET(
   connectDB();
   try {
     const adminFound = await rutas.findOne({
-      id: params.rut,
+      _id: params.rut,
     });
     console.log(adminFound);
     if (!adminFound) {
@@ -29,10 +29,10 @@ export async function PUT(
   { params }: { params: { rut: string } }
 ) {
   try {
-    const { id, linea } = await request.json();
+    const { linea, localidad, descripcion } = await request.json();
     const updateAdmin = await rutas.findOneAndUpdate(
-      { id: params.rut },
-      { id, linea },
+      { _id: params.rut },
+      { linea, localidad, descripcion },
       { new: true }
     );
     console.log(updateAdmin);
@@ -47,7 +47,7 @@ export async function DELETE(
 ) {
   try {
     const deleteAdmin = await rutas.findOneAndDelete({
-      id: params.rut,
+      _id: params.rut,
     });
     console.log(deleteAdmin);
     if (!deleteAdmin) {

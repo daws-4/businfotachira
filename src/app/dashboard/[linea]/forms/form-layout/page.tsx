@@ -11,9 +11,10 @@ export const metadata: Metadata = {
     "This is Next.js Form Layout page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const FormLayout = () => {
+const FormLayout = ({params}: {params:any}) => {
+ const param = params;
   return (
-    <DefaultLayout>
+    <DefaultLayout params={param}>
       <Breadcrumb pageName="FormLayout" />
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
