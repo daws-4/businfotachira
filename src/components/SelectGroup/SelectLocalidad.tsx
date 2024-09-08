@@ -33,7 +33,7 @@ const SelectLocalidad: React.FC<SelectLocalidadProps> = ({ onChange }) => {
                         }`}
                 >
                     <option value="" disabled className="text-body dark:text-bodydark">
-                        Selecciona tu localidad
+                        Selecciona la localidad
                     </option>
                     <option value="0" className="text-body dark:text-bodydark">
                         San Cristóbal

@@ -52,9 +52,7 @@ const Rutaspost: React.FC<CarteleraProps> = ({ params }) => {
     }
 
     const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setLocalidad(e.target.value);
-        
-        
+        setLocalidad(e.target.value);    
     };
 
     return (
@@ -69,7 +67,7 @@ const Rutaspost: React.FC<CarteleraProps> = ({ params }) => {
                 <form onSubmit={handleForm}>
                     <div className="p-6.5">
                         <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                            <div className="w-full xl:w-1/2">
+                            <div className="w-full ">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nombre
                                 </label>

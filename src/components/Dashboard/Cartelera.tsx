@@ -125,7 +125,7 @@ const Cartelera: React.FC<CarteleraProps> = ({ params }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:gap-7.5">
         {currentItems.map((item: any, index: any) => {
           const urlCard = `/dashboard/${params.linea}/posts/${item._id}`;
           const date = new Date(item.createdAt);

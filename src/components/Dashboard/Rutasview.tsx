@@ -2,81 +2,89 @@
 import dynamic from "next/dynamic";
 import React from "react";
 import Link from "next/link";
-import ChartOne from "../Charts/ChartOne";
-import ChartTwo from "../Charts/ChartTwo";
-import ChatCard from "../Chat/ChatCard";
-import TableOne from "../Tables/TableOne";
 import CardData from "../CardData";
 import axios from "axios";
+import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
 
-const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
-    ssr: false,
-});
-
-const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
-    ssr: false,
-});
 
 interface CarteleraProps {
-    params: { linea: any, poste: any };
+    params: { linea: any, taru: any };
 }
 
-const Post: React.FC<CarteleraProps> = ({ params }) => {
+const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [descripcion, setDescripcion] = useState("");
     const [data, setData] = useState<any>([]);
+    const [localidad, setLocalidad] = useState<number>();
+    const [sector, setSector] = useState("San Cristóbal");
 
     const router = useRouter();
+    const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (e.target.value === "0") {
+            setLocalidad(0);
+            console.log(e.target.value);
+        } else if (e.target.value === "1") {
+            setLocalidad(1);
+            console.log(e.target.value);
+        } else if (e.target.value === "2") {
+            setLocalidad(2);
+            console.log(e.target.value);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/posts/${params.poste}`);
+                const response = await axios.get(`/api/rutas/${params.taru}`);
                 setData(response.data);
-                setTitle(response.data.titulo);
-                setText(response.data.texto);
+                setNombre(response.data.nombre);
+                setDescripcion(response.data.descripcion);
+                if (response.data.localidad === 1) {
+                    setSector('San Cristóbal - Cárdenas');
+                } else if (response.data.localidad === 2) {
+                    setSector('San Cristóbal - Torbes');
+                }
             } catch (error) {
-                router.push(`/dashboard/${params.linea}`);
+                router.push(`/dashboard/${params.linea}/rutas`);
             }
         };
         fetchData();
-    }, [params.poste]);
+    }, [params.taru]);
     useEffect(() => {
-        if (data.id && params.poste != data._id) {
-            router.push(`/dashboard/${params.linea}`);
+        if (data.id && params.taru != data._id) {
+            router.push(`/dashboard/${params.linea}/rutas`);
         }
-    }, [data, params.poste, params.linea, router]);
+    }, [data, params.taru, params.linea, router]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value);
+        setNombre(e.target.value);
         console.log(e.target.value);
     }
 
 
-    const handleDelete = async (_id: string) => {
+    const handleDelete = async (id: string) => {
         const confirmDelete = window.confirm(
             "¿Estás seguro que deseas ELIMINAR este contrato?"
         );
         if (confirmDelete) {
             try {
-                const response = await fetch(`/api/posts/${_id}`, {
+                const response = await fetch(`/api/rutas/${id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
 
-                    toast.success("Publicación eliminada correctamente.");
+                    toast.success("Ruta eliminada correctamente.");
                     router.push(`/dashboard/${params.linea}`);
                 } else {
-                    toast.error("Error al eliminar la publicación.");
+                    toast.error("Error al eliminar la Ruta.");
                 }
             } catch (error) {
                 console.log(error);
-                toast.error("Error al eliminar la publicación.");
+                toast.error("Error al eliminar la Ruta.");
             }
         }
     };
@@ -87,16 +95,17 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
         e.preventDefault();
         try {
 
-            const uploadData = await axios.put(`/api/posts/${params.poste}`, {
-                titulo: title,
-                texto: text,
+            const uploadData = await axios.put(`/api/rutas/${params.taru}`, {
+                nombre: nombre,
+                descripcion: descripcion,
+                localidad: localidad,
                 linea: params.linea,
             })
             window.location.reload();
-            toast.success("Publicación Actualizada con éxito!");
+            toast.success("Ruta Actualizada con éxito!");
         } catch (error) {
             console.log(error);
-            toast.error("Error al subir la publicación.");
+            toast.error("Error al subir la Ruta.");
         }
 
     };
@@ -116,10 +125,11 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
                 <CardData
-                    username={data.linea}
+                    username={data.nombre}
                     id={data._id}
-                    text={data.texto}
-                    title={data.titulo}
+                    text={data.descripcion}
+                    subtitle={sector}
+                    title={data.nombre}
                     rate={formattedDate}
                     levelUp={data.levelUp}
                 >
@@ -136,7 +146,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
             <div className=" w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Editar Publicación
+                        Editar Ruta
                     </h3>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
@@ -148,20 +158,23 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                                 </label>
                                 <input
 
-                                    value={title}
+                                    value={nombre}
                                     onChange={handleChange}
                                     type="text"
                                     placeholder="Editar Título"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 />
                             </div>
+
+                            <SelectLocalidad onChange={handleLocalidadChange} />
                             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Editar Texto
                             </label>
+
                             <textarea
                                 rows={6}
-                                value={text}
-                                onChange={(e) => setText(e.target.value)}
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
                                 placeholder="Editar Texto"
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             ></textarea>
@@ -169,7 +182,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
                                 type="submit"
                                 className="inline-flex items-center justify-center rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                             >
-                                Actualizar Publicación
+                                Actualizar Ruta
                             </button>
                         </form>
                     </div>
@@ -179,4 +192,4 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
     );
 };
 
-export default Post;
+export default Rutasview;

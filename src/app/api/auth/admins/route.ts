@@ -32,7 +32,7 @@ export async function POST(request: any) {
 
     const token = sign(
       {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
         username: admins.username,
         rol: admins.rol,
       },
