@@ -1,13 +1,22 @@
 import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import precios from "@/models/precios";
-
+const jwtName = process.env.JWT_NAME;
+    if (!jwtName) {
+      throw new Error("JWT_NAME is not defined in environment variables");
+    }
+  
 export async function GET(
   request: any,
   { params }: { params: { pri: string } }
 ) {
   connectDB();
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const adminFound = await precios.findOne({
       id: params.pri,
     });
@@ -28,7 +37,10 @@ export async function PUT(
   request: any,
   { params }: { params: { pri: string } }
 ) {
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const { Monto_USD, Monto_COP, Monto_BSD } = await request.json();
     const updateAdmin = await precios.findOneAndUpdate(
       { id: params.pri },
@@ -45,7 +57,10 @@ export async function DELETE(
   request: any,
   { params }: { params: { pri: string } }
 ) {
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const deleteAdmin = await precios.findOneAndDelete({
       id: params.pri,
     });

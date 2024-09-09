@@ -1,11 +1,20 @@
 import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import lineas from "@/models/lineas";
-
+const jwtName = process.env.JWT_NAME;
+    if (!jwtName) {
+      throw new Error("JWT_NAME is not defined in environment variables");
+    }
+  
 export async function GET(request: any, {params}: {params: {name: string}}) {
         connectDB();
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
         try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
             const adminFound = await lineas.findOne({
               username: params.name,
             });
@@ -22,7 +31,10 @@ export async function GET(request: any, {params}: {params: {name: string}}) {
         }  
      }
 export async function PUT(request:any, {params}: {params:{name:string}}){
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
       const { username, contraseña, rol, email, telefono, direccion, nombre } =
         await request.json();
       const password = await bcrypt.hash(contraseña, 10);
@@ -37,7 +49,10 @@ export async function PUT(request:any, {params}: {params:{name:string}}){
     return NextResponse.json({message: "Actualizando Datos"});
 }
 export async function DELETE(request:any, {params}: {params:{name:string}}){
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const deleteAdmin = await lineas.findOneAndDelete({
       username: params.name,
     });

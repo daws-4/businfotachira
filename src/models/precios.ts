@@ -17,6 +17,11 @@ const precios = new Schema(
       required: true,
       trim: true,
     },
+    linea: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

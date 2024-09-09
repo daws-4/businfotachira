@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import React from "react";
 import CardDataStats from "../CardDataStats";
 import axios from "axios";
@@ -19,7 +18,7 @@ const Rutas: React.FC<CarteleraProps> = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
     const response = await axios.get(`/api/rutas`);
-    setData(response.data);
+    setData(response.data.filter((item: any) => item.linea === params.linea));
   };
    fetchData();
 }, []);
@@ -32,6 +31,10 @@ const Rutas: React.FC<CarteleraProps> = ({ params }) => {
             localidad = 'San Cristóbal - Cárdenas';
           }else if(item.localidad === 2){
             localidad = 'San Cristóbal - Torbes';
+          }else if (item.localidad === 3){
+            localidad = 'San Cristóbal - Guásimos';
+          }else if (item.localidad === 4){
+            localidad = 'San Cristóbal - Andrés Bello';
           }
           const urlCard = `/dashboard/${params.linea}/rutas/${item._id}`;
           const date = new Date(item.createdAt);

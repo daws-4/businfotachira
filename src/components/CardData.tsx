@@ -5,6 +5,7 @@ interface CardDataStatsProps {
   text?: string;
   title: string;
   subtitle?: string;
+  subtitle2?: string;
   rate: string;
   levelUp?: boolean;
   levelDown?: boolean;
@@ -16,6 +17,7 @@ const CardData: React.FC<CardDataStatsProps> = ({
   username,
   text,
   subtitle,
+  subtitle2,
   title,
   rate,
   levelUp,
@@ -31,8 +33,11 @@ const CardData: React.FC<CardDataStatsProps> = ({
           <h4 className="text-title-md font-bold text-black dark:text-white">
             {title}
           </h4>
-          <h4 className="text-sm font-bold text-black dark:text-white">
+          <h4 className="text-md font-bold text-black dark:text-white">
             {subtitle}
+          </h4>
+          <h4 className="text-md font-bold text-black dark:text-white">
+            {subtitle2}
           </h4>
           <span className="text-sm font-medium">{text}</span>
         </div>

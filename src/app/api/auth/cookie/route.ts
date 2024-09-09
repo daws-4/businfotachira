@@ -3,8 +3,12 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export function GET() {
+     const jwtName = process.env.JWT_NAME;
+    if (!jwtName) {
+      throw new Error("JWT_NAME is not defined in environment variables");
+    }
   const cookieStore = cookies();
-  const token: any = cookieStore.get("TokenLogin");
+  const token: any = cookieStore.get(jwtName as any);
 
   if (token && token.value) {
     try {

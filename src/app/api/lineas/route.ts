@@ -1,10 +1,20 @@
 import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import lineas from "@/models/lineas";
 connectDB();
+const jwtName = process.env.JWT_NAME;
+    if (!jwtName) {
+      throw new Error("JWT_NAME is not defined in environment variables");
+    }
+  
 export async function POST(request: any) {
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
   try {
+       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const { username, contraseña, rol, email, telefono, direccion, nombre } = await request.json();
     const password = await bcrypt.hash(contraseña, 10);
     const newAdmin = new lineas({ username, password, rol, email, telefono, direccion, nombre });
@@ -16,6 +26,15 @@ export async function POST(request: any) {
   }
 }
 export async function GET(request: any) {
+  const cookieStore = cookies();
+  const token: any = cookieStore.get(jwtName as any);
+  try {
+      
+    jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
+    const admins = await lineas.find();
+    return NextResponse.json(admins);
+  } catch (error) {
   const admins = await lineas.find();
   return NextResponse.json(admins);
+}
 }

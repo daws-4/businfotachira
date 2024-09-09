@@ -44,6 +44,12 @@ const SelectLocalidad: React.FC<SelectLocalidadProps> = ({ onChange }) => {
                     <option value="2" className="text-body dark:text-bodydark">
                         San Cristóbal - Torbes
                     </option>
+                    <option value="3" className="text-body dark:text-bodydark">
+                        San Cristóbal - Guásimos
+                    </option>
+                    <option value="4" className="text-body dark:text-bodydark">
+                        San Cristóbal - Andrés Bello
+                    </option>
                 </select>
 
                 <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">

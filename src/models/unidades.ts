@@ -18,6 +18,11 @@ const unidades = new Schema(
       required: true,
       trim: true,
     },
+    ci_conductor:{
+      type: Number,
+      required: true,
+      trim: true
+    },
     linea: {
       type: String,
       required: true,

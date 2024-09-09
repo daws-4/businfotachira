@@ -47,6 +47,10 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                     setSector('San Cristóbal - Cárdenas');
                 } else if (response.data.localidad === 2) {
                     setSector('San Cristóbal - Torbes');
+                }else if (response.data.localidad === 3) {
+                    setSector('San Cristóbal - Guásimos');
+                }else if (response.data.localidad === 4) {
+                    setSector('San Cristóbal - Andrés Bello');
                 }
             } catch (error) {
                 router.push(`/dashboard/${params.linea}/rutas`);
@@ -55,7 +59,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         fetchData();
     }, [params.taru]);
     useEffect(() => {
-        if (data.id && params.taru != data._id) {
+        if (data._id && params.taru != data._id) {
             router.push(`/dashboard/${params.linea}/rutas`);
         }
     }, [data, params.taru, params.linea, router]);
@@ -68,7 +72,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
     const handleDelete = async (id: string) => {
         const confirmDelete = window.confirm(
-            "¿Estás seguro que deseas ELIMINAR este contrato?"
+            "¿Estás seguro que deseas ELIMINAR esta ruta?"
         );
         if (confirmDelete) {
             try {
@@ -143,7 +147,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
             </div>
 
-            <div className=" w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
                         Editar Ruta
@@ -154,7 +158,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                         <form onSubmit={handleSubmit}>
                             <div className="pb-10">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Título
+                                    Editar Nombre
                                 </label>
                                 <input
 
@@ -167,8 +171,8 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                             </div>
 
                             <SelectLocalidad onChange={handleLocalidadChange} />
-                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Editar Texto
+                            <label className=" pt-5 mb-3 block text-sm font-medium text-black dark:text-white">
+                                Editar Descripcion
                             </label>
 
                             <textarea
