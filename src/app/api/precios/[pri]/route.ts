@@ -18,7 +18,7 @@ export async function GET(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const adminFound = await precios.findOne({
-      id: params.pri,
+      _id: params.pri,
     });
     console.log(adminFound);
     if (!adminFound) {
@@ -43,7 +43,7 @@ export async function PUT(
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const {linea, distancia, Monto_USD, Monto_COP, Monto_BSD } = await request.json();
     const updateAdmin = await precios.findOneAndUpdate(
-      { id: params.pri },
+      { _id: params.pri },
       {linea, distancia, Monto_USD, Monto_COP, Monto_BSD },
       { new: true }
     );
@@ -62,7 +62,7 @@ export async function DELETE(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const deleteAdmin = await precios.findOneAndDelete({
-      id: params.pri,
+      _id: params.pri,
     });
     console.log(deleteAdmin);
     if (!deleteAdmin) {

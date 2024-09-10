@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Visualización de rutas de transporte público en el estado Táchira, Venezuela",
 };
 
-export default function Home({ params }: { params: { linea: any, unida: any  }    }) {
+export default function Home({ params }: { params: { linea: any, prep: any  }    }) {
   const param = params;
   return (
     <>

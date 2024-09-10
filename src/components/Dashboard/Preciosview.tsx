@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 
 interface CarteleraProps {
-    params: { linea: any, unida: any };
+    params: { linea: any, prep: any };
 }
 
 const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
@@ -29,24 +29,20 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/unidades/${params.unida}`);
+                const response = await axios.get(`/api/precios/${params.prep}`);
                 console.log(response.data);
                 setData(response.data);
-                setNombre(response.data.nombre_conductor);
-                setCi(response.data.ci_conductor);
-                setPlaca(response.data.placa);
-                setNumero(response.data.numero);
             } catch (error) {
-                router.push(`/dashboard/${params.linea}/unidades`);
+                router.push(`/dashboard/${params.linea}/precios`);
             }
         };
         fetchData();
-    }, [params.unida]);
+    }, [params.prep]);
     useEffect(() => {
-        if (data.placa && params.unida != data.placa) {
-            router.push(`/dashboard/${params.linea}/unidades`);
+        if (data._id && params.prep != data._id) {
+            router.push(`/dashboard/${params.linea}/precios`);
         }
-    }, [data, params.unida, params.linea, router]);
+    }, [data, params.prep, params.linea, router]);
 
     const handleChangeNombre = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNombre(e.target.value);
@@ -68,23 +64,23 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
 
     const handleDelete = async (id: string) => {
         const confirmDelete = window.confirm(
-            "¿Estás seguro que deseas ELIMINAR esta Unidad?"
+            "¿Estás seguro que deseas ELIMINAR esta precio?"
         );
         if (confirmDelete) {
             try {
-                const response = await fetch(`/api/unidades/${id}`, {
+                const response = await fetch(`/api/prepdes/${id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
 
-                    toast.success("Unidad eliminada correctamente.");
-                    router.push(`/dashboard/${params.linea}/unidades`);
+                    toast.success("prepd eliminada correctamente.");
+                    router.push(`/dashboard/${params.linea}/precios`);
                 } else {
-                    toast.error("Error al eliminar la Unidad.");
+                    toast.error("Error al eliminar el precio.");
                 }
             } catch (error) {
                 console.log(error);
-                toast.error("Error al eliminar la Unidad.");
+                toast.error("Error al eliminar el precio.");
             }
         }
     };
@@ -95,7 +91,7 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
         e.preventDefault();
         try {
 
-            const uploadData = await axios.put(`/api/unidades/${params.unida}`, {
+            const uploadData = await axios.put(`/api/precios/${params.prep}`, {
                 nombre_conductor: nombre,
                 ci_conductor: ci,
                 numero: numero,
@@ -103,11 +99,11 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
                 linea: params.linea,
             })
             if (uploadData)
-                router.push(`/dashboard/${params.linea}/unidades`);
-            toast.success("Unidad Actualizada con éxito!");
+                router.push(`/dashboard/${params.linea}/precios`);
+            toast.success("prepd Actualizada con éxito!");
         } catch (error) {
             console.log(error);
-            toast.error("Error al subir la Unidad.");
+            toast.error("Error al  el precio.");
         }
 
     };
@@ -120,8 +116,16 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
         hour: '2-digit',
         minute: '2-digit',
     });
-    //    const truncatedText = data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto;
-    //falta mapear 
+    let dist = 'Dentro del municipio'
+    if (data.distancia == '1') {
+        dist = 'Un municipio'
+    } else if (data.distancia == '2') {
+        dist = 'Dos municipios'
+    } else if (data.distancia == '3') {
+        dist = 'Tres municipios'
+    } else if (data.distancia == '4') {
+        dist = 'Cuatro municipios'
+    }
     return (
         <>
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -129,92 +133,15 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
                 <CardData
                     username={data.nombre}
                     id={data._id}
-                    text={`Código de Placa: ${data.placa}`}
-                    subtitle={`Nombre del Conductor: ${data.nombre_conductor}`}
-                    subtitle2={`Cédula de Identidad: ${data.ci_conductor}`}
-                    title={`Número de Unidad: ${data.numero}`}
-                    rate={formattedDate}
+                    text={`Distancia: ${dist}`}
+                    title={`Precio BS: ${data.Monto_BSD}`}
+                    rate={`${formattedDate}`}
+                    subtitle={`Precio COP: ${data.Monto_COP}`}
+                    subtitle2={`Precio USD: ${data.Monto_USD}`}
                     levelUp={data.levelUp}
                 >
-                    <button
-                        onClick={() => handleDelete(data.placa)}
-                        className="inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    >
-                        Eliminar
-                    </button>
+                   
                 </CardData>
-            </div>
-
-            <div className=" sm:w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                    <h3 className="font-medium text-black dark:text-white">
-                        Editar Unidad
-                    </h3>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                    <div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="pb-3">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Número de Unidad
-                                </label>
-                                <input
-
-                                    value={numero}
-                                    onChange={handleChangeNumero}
-                                    type="text"
-                                    placeholder="Editar Número de Unidad"
-                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
-                            </div>
-                            <div className="pb-3">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Nombre del Conductor
-                                </label>
-                                <input
-
-                                    value={nombre}
-                                    onChange={handleChangeNombre}
-                                    type="text"
-                                    placeholder="Editar Nombre del conductor"
-                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
-                            </div>
-                            <div className="pb-3">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Cédula de Identidad del Conductor
-                                </label>
-                                <input
-
-                                    value={ci}
-                                    onChange={handleChangeCi}
-                                    type="text"
-                                    placeholder="Editar cédula de identidad del conductor"
-                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
-                            </div>
-                            <div className="pb-3">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Código de Placa
-                                </label>
-                                <input
-
-                                    value={placa}
-                                    onChange={handleChangePlaca}
-                                    type="text"
-                                    placeholder="Editar código de placa"
-                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="inline-flex items-center justify-center rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                            >
-                                Actualizar Unidad
-                            </button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </>
     );

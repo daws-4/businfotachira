@@ -10,11 +10,12 @@ export const metadata: Metadata = {
     "This is Next.js Profile page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const Profile = () => {
+const Profile = ({ params }: { params: { linea: any } }) => {
+  const param = params;
   return (
-    <DefaultLayout>
+    <DefaultLayout params={param}>
       <div className="mx-auto max-w-242.5">
-        <Breadcrumb pageName="Profile" />
+        <Breadcrumb params={param} pageName="Profile" />
 
         <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="relative z-20 h-35 md:h-65">

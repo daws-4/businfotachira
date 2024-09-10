@@ -14,14 +14,14 @@ const Settings = ({ params }: { params: { linea: any } }) => {
   return (
     <DefaultLayout params={param}>
       <div className="mx-auto max-w-270">
-        <Breadcrumb params={param} pageName="Settings" />
+        <Breadcrumb params={param} pageName="Ajustes" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Personal Information
+                  Información de la Línea
                 </h3>
               </div>
               <div className="p-7">
@@ -32,7 +32,7 @@ const Settings = ({ params }: { params: { linea: any } }) => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Full Name
+                        Nombre
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -76,7 +76,7 @@ const Settings = ({ params }: { params: { linea: any } }) => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phoneNumber"
                       >
-                        Phone Number
+                        Número de Teléfono
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
