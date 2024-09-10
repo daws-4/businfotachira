@@ -41,10 +41,10 @@ export async function PUT(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { Monto_USD, Monto_COP, Monto_BSD } = await request.json();
+    const {linea, distancia, Monto_USD, Monto_COP, Monto_BSD } = await request.json();
     const updateAdmin = await precios.findOneAndUpdate(
       { id: params.pri },
-      { Monto_USD, Monto_COP, Monto_BSD },
+      {linea, distancia, Monto_USD, Monto_COP, Monto_BSD },
       { new: true }
     );
     console.log(updateAdmin);

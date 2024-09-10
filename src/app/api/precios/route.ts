@@ -2,7 +2,7 @@ import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import mapa from "@/models/mapa";
+import precios from "@/models/precios";
 connectDB();
 const jwtName = process.env.JWT_NAME;
     if (!jwtName) {
@@ -14,13 +14,15 @@ export async function POST(request: any) {
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { Monto_USD, Monto_COP, Monto_BSD } = await request.json();
-    const newUnidad = new mapa({ Monto_USD, Monto_COP, Monto_BSD });
+    const {linea, distancia, Monto_USD, Monto_COP, Monto_BSD } = await request.json();
+    const newUnidad = new precios({linea, distancia, Monto_USD, Monto_COP, Monto_BSD });
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);
   } catch (error) {
+    console.log(error)
     return NextResponse.json((error as Error).message, { status: 400 });
+    
   }
 }
 export async function GET(request: any) {
@@ -29,7 +31,7 @@ export async function GET(request: any) {
 
   try {
       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-  const admins = await mapa.find();
+  const admins = await precios.find();
   return NextResponse.json(admins);
   } catch (error) {
       

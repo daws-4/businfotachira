@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
+import SelectDistancia from "@/components/SelectGroup/SelectDistancia";
 import { useRouter } from "next/navigation";
 
 interface CarteleraProps {
@@ -14,10 +14,10 @@ interface CarteleraProps {
 }
 
 const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
-    const [nombre, setNombre] = useState("");
-    const [placa, setPlaca] = useState("");
-    const [numero, setNumero] = useState("");
-    const [ci, setCi] = useState("");
+    const [bs, setBs] = useState("");
+    const [usd, setUsd] = useState("");
+    const [cop, setCop] = useState("");
+    const [distancia, setDistancia] = useState("");
     const [data, setData] = useState<any>([]);
     const router = useRouter();
 
@@ -32,31 +32,34 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
     const handleForm = async (e: any) => {
         e.preventDefault();
         const confirmAdd = window.confirm(
-            "¿Estás seguro que deseas AÑADIR una nueva unidad?"
+            "¿Estás seguro que deseas AÑADIR un nuevo precio?"
         );
         if (confirmAdd) {
             try {
                 const response = await axios.post("/api/precios", {
-                    nombre_conductor: nombre,
-                    ci_conductor: ci,
-                    numero: numero,
-                    placa: placa,
+                    Monto_BSD: bs,
+                    Monto_COP: cop,
+                    Monto_USD: usd,
+                    distancia: distancia,
                     linea: params.linea,
                 });
                 console.log(response)
-                toast.success("Ruta agregada exitosamente");
-                router.push(`/dashboard/${params.linea}/unidades`);
+                toast.success("Precio actualizado exitosamente");
+                router.push(`/dashboard/${params.linea}/precios`);
             } catch (error) {
                 console.log(error)
-                toast.error("Error al agregar la ruta");
+                toast.error("Error al actualizar el precio");
             }
         }
     }
+    const handleDistanciaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setDistancia(e.target.value);
+    };
 
     return (
         <>
             <div className="flex justify-center items-center">
-                <div className=" md:w-1/4 w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className=" lg:w-1/3 w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className=" justify-center border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                         <h3 className="font-medium text-black dark:text-white">
                             Ingresar Nuevo Precio
@@ -64,15 +67,16 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
                     </div>
                     <form onSubmit={handleForm}>
                         <div className="p-6.5">
-                            <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                            <SelectDistancia onChange={handleDistanciaChange}/>
+                            <div className="mb-4.5 flex flex-col gap-6 ">
                                 <div className="w-full ">
                                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                                         Precio en Bs.
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         required
-                                        onChange={(e) => setNombre(e.target.value)}
+                                        onChange={(e) => setBs(e.target.value)}
                                         placeholder="BSD"
                                         className=" w-full  rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     />
@@ -82,9 +86,9 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
                                         Precio en COP
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         required
-                                        onChange={(e) => setCi(e.target.value)}
+                                        onChange={(e) => setCop(e.target.value)}
                                         placeholder="COP"
                                         className="w-full  rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     />
@@ -96,10 +100,11 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
                                     Precio en USD
                                 </label>
                                 <input
-                                    type="text"
+                                    type="number"
+                                    step="0.01"
                                     required
                                     maxLength={8}
-                                    onChange={(e) => setPlaca(e.target.value)}
+                                    onChange={(e) => setUsd(e.target.value)}
                                     placeholder="USD"
                                     className=" w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 />
@@ -118,3 +123,4 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
 
 export default Unidadespost;
 
+// "mapa validation failed: ruta: Path `ruta` is required., url: Path `url` is required., id: Path `id` is required."
