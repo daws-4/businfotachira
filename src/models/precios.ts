@@ -3,17 +3,17 @@ import { Schema, model, models } from "mongoose";
 const precios = new Schema(
   {
     Monto_USD: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },
     Monto_COP: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },
     Monto_BSD: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },

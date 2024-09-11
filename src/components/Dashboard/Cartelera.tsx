@@ -23,8 +23,7 @@ const Cartelera: React.FC<CarteleraProps> = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`/api/posts`)
-      setData(response.data);
-
+      setData(response.data.filter((item: any) => item.linea === params.linea));
     };
     fetchData();
   }, []);

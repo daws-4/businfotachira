@@ -11,8 +11,8 @@ interface CarteleraProps {
 }
 
 const Precios: React.FC<CarteleraProps> = ({ params }) => {
-    const [data, setData] = useState<any>([]);
     const [showAll, setShowAll] = useState<{ [key: string]: boolean }>({});
+    const [data, setData] = useState<any>([]);
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`/api/precios`);

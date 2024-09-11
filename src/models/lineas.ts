@@ -24,14 +24,9 @@ const lineas = new Schema(
       trim: true,
     },
     telefono: {
-      type: [Number],
+      type: [String],
       required: true,
       trim: true,
-      validate: {
-        validator: function (v: number[]) {
-          return v.every((phone) => typeof phone === "number");
-        },
-      },
     },
     direccion: {
       type: String,

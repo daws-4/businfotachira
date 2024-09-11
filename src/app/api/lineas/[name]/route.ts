@@ -35,12 +35,11 @@ export async function PUT(request:any, {params}: {params:{name:string}}){
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-      const { username, contraseña, rol, email, telefono, direccion, nombre } =
+      const { email, telefono, direccion, nombre } =
         await request.json();
-      const password = await bcrypt.hash(contraseña, 10);
       const updateAdmin = await lineas.findOneAndUpdate(
         { username: params.name },
-        { username, password, rol, email, telefono, direccion, nombre },
+        { email, telefono, direccion, nombre },
         { new: true }
       );
   } catch (error) {
