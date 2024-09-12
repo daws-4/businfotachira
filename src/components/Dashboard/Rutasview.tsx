@@ -3,10 +3,8 @@ import dynamic from "next/dynamic";
 import React from "react";
 import Link from "next/link";
 import CardData from "../CardData";
-import MultipleMarkersMap from "../mapas/Googlemapsmultiplemarker";
 import GoogleMapComponent from "@/components/mapas/Googlemapstest";
-import Loader from "@/components/mapas/Loader";
-import GoogleMapRouteComponent from "../mapas/Googlemapstest2";
+import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
 import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
 import { toast } from "react-toastify";
@@ -131,7 +129,10 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     return (
         <> 
             <div className="sm:w-1/2 w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <MultipleMarkersMap></MultipleMarkersMap>
+                <GoogleMapApiLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?? ''}>
+                    <GoogleMapComponent />
+            </GoogleMapApiLoader>
+                
                 </div>
 
 

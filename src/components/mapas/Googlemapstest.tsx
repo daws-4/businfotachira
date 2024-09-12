@@ -1,7 +1,6 @@
 'use client'
 import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-
+import { GoogleMap, GoogleMapApiLoader, Marker } from 'react-google-map-wrapper';
 const containerStyle = {
     width: '100%',
     height: '400px'
@@ -12,18 +11,16 @@ const center = {
     lng: -72.21868
 };
 
-const GoogleMapComponent = () => {
+const GoogleMapComponent = () =>  {
+
     return (
-        <LoadScript googleMapsApiKey = {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={13}
-            >
-                <Marker position={center} />
-            </GoogleMap>
-        </LoadScript>
+        <GoogleMap className='h-[400px]'
+            containerProps={{ id: 'my-map' }} 
+            zoom={14} 
+            center={{ lat: 7.770603, lng: -72.21868 }}>
+            <Marker lat={7.770603} lng={-72.21868} draggable/>
+        </GoogleMap>
     );
-};
+}
 
 export default GoogleMapComponent;
