@@ -131,7 +131,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         <> 
             <div className="sm:w-1/2 w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?? ''}>
-                    <Map />
+                    <GoogleMapComponent />
             </GoogleMapApiLoader>
                 
                 </div>

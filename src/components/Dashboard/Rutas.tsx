@@ -11,8 +11,6 @@ interface CarteleraProps {
 }
 
 const Rutas: React.FC<CarteleraProps> = ({ params }) => {
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {

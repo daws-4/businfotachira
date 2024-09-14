@@ -1,19 +1,13 @@
 import { Schema, model, models } from "mongoose";
 
+const pdr = new Schema(
+  {
+    
+  }
+)
+
 const mapa = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    url: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
     linea: {
       type: String,
       required: true,
