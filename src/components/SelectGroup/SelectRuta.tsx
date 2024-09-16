@@ -28,7 +28,7 @@ const SelectLocalidad: React.FC<SelectLocalidadProps> = ({ onChange, params }) =
     };
 
     return (
-        <div className="mb-4.5">
+        <div className="mb-4.5 pb-2">
             <label className="mb-2.5 block text-black dark:text-white">
                 {" "}
                 Localidad{" "}

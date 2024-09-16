@@ -12,11 +12,14 @@ interface CarteleraProps {
 
 const Pdr: React.FC<CarteleraProps> = ({ params }) => {
     const [data, setData] = useState<any>([]);
+    const [rutas, setRutas] = useState<any>([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`/api/pdr`);
+            const response = await axios.get(`/api/mapas`);
             setData(response.data.filter((item: any) => item.linea === params.linea));
+            const resp = await axios.get(`/api/rutas`);
+            setRutas(resp.data.filter((item:any) => item.linea===params.linea)   );
         };
         fetchData();
     }, []);
@@ -24,15 +27,20 @@ const Pdr: React.FC<CarteleraProps> = ({ params }) => {
         <>
             <div className="pb-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5">
                 {data.map((item: any, index: any) => {
+                   const rut = rutas.find((ruta:any)=>ruta._id===item.ruta)
                     let localidad = 'San Cristóbal';
-                    if (item.localidad === 1) {
+                    let nombre = ''
+                    if (rut) {
+                    nombre = rut.nombre;
+                    if (rut.localidad === 1) {
                         localidad = 'San Cristóbal - Cárdenas';
-                    } else if (item.localidad === 2) {
+                    } else if (rut.localidad === 2) {
                         localidad = 'San Cristóbal - Torbes';
-                    } else if (item.localidad === 3) {
+                    } else if (rut.localidad === 3) {
                         localidad = 'San Cristóbal - Guásimos';
-                    } else if (item.localidad === 4) {
+                    } else if (rut.localidad === 4) {
                         localidad = 'San Cristóbal - Andrés Bello';
+                    }
                     }
                     const urlCard = `/dashboard/${params.linea}/pdr/${item._id}`;
                     const date = new Date(item.createdAt);
@@ -43,12 +51,11 @@ const Pdr: React.FC<CarteleraProps> = ({ params }) => {
                         hour: '2-digit',
                         minute: '2-digit',
                     });
-                    const truncatedText = item.descripcion.length > 100 ? item.descripcion.substring(0, 100) + '...' : item.descripcion;
                     return (
                         <CardDataStats
                             url={urlCard}
                             key={index}
-                            text={truncatedText}
+                            text={nombre}
                             title={item.nombre}
                             subtitle={localidad}
                             levelUp={item.levelUp}

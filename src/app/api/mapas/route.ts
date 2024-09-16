@@ -14,8 +14,8 @@ export async function POST(request: any) {
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { id, url, linea, mapa, pdr } = await request.json();
-    const newUnidad = new mapa({ id, url, linea, mapa, pdr });
+    const {nombre, ruta, linea, polilyne} = await request.json();
+    const newUnidad = new mapa({nombre, ruta, linea, polilyne});
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);

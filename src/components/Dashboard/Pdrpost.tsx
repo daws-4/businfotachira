@@ -16,19 +16,20 @@ interface CarteleraProps {
 const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
     const param=params
     const [nombre, setNombre] = useState("");
-    const [localidad, setLocalidad] = useState("");
-    const [description, setDescription] = useState("");
+    const [ruta, setRuta] = useState("");
     const [data, setData] = useState<any>([]);
     const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`/api/pdr`);
+            const response = await axios.get(`/api/mapas`);
             setData(response.data.filter((item: any) => item.linea === params.linea));
         };
         fetchData();
     }, []);
-
+    const polilyne = [
+        { idd: '-64.44807700000001', lat: '7.770603', lng: '-72.21868' }]
+    
     const handleForm = async (e: any) => {
         e.preventDefault();
         const confirmAdd = window.confirm(
@@ -36,11 +37,11 @@ const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
         );
         if (confirmAdd) {
             try {
-                const response = await axios.post("/api/pdr", {
+                const response = await axios.post("/api/mapas", {
                     nombre: nombre,
-                    localidad: localidad,
-                    descripcion: description,
+                    ruta: ruta,
                     linea: params.linea,
+                    polilyne: polilyne,
                 });
                 console.log(response)
                 toast.success("Parte del recorrido agregada exitosamente");
@@ -52,8 +53,8 @@ const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
         }
     }
 
-    const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setLocalidad(e.target.value);
+    const handleRutaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setRuta(e.target.value);
     };
 
     return (
@@ -81,23 +82,10 @@ const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
                                     />
                                 </div>
                             </div>
-                            <SelectRuta params={param} onChange={handleLocalidadChange} />
+                            <SelectRuta params={param} onChange={handleRutaChange} />
 
-                            <div className="mb-6">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Descripción
-                                </label>
-                                <textarea
-                                    rows={6}
-                                    required
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Breve descroipción de la ruta"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                ></textarea>
-                            </div>
-
-                            <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                                Añadri parte del recorrido
+                            <button className=" flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                                Añadir parte del recorrido
                             </button>
                         </div>
                     </form>

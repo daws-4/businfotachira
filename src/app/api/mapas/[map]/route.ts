@@ -18,7 +18,7 @@ export async function GET(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const adminFound = await mapa.findOne({
-      id: params.map,
+      _id: params.map,
     });
     console.log(adminFound);
     if (!adminFound) {
@@ -41,10 +41,10 @@ export async function PUT(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { id, url, linea, mapa, pdr } = await request.json();
+    const {nombre, ruta, linea, pdr, polilyne } = await request.json();
     const updateAdmin = await mapa.findOneAndUpdate(
       { id: params.map },
-      { id, url, linea, mapa, pdr },
+      {nombre, ruta, linea, pdr, polilyne},
       { new: true }
     );
     console.log(updateAdmin);
@@ -62,7 +62,7 @@ export async function DELETE(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const deleteAdmin = await mapa.findOneAndDelete({
-      id: params.map,
+      _id: params.map,
     });
     console.log(deleteAdmin);
     if (!deleteAdmin) {

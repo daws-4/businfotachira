@@ -1,4 +1,4 @@
-import Rutasview from "@/components/Dashboard/Rutasview";
+import Pdrview from "@/components/Dashboard/Pdrview";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { ToastContainer } from "react-toastify";
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description: "Visualización de rutas de transporte público en el estado Táchira, Venezuela",
 };
 
-export default function Home({ params }: { params: { linea: any, taru: any  }    }) {
+export default function Home({ params }: { params: { linea: any, pd: any  }    }) {
   const param = params;
   return (
     <>
       <DefaultLayout params = {param}>
-        <Rutasview params = {param}/>
+        <Pdrview params = {param}/>
         <ToastContainer /> 
       </DefaultLayout>
     </>
