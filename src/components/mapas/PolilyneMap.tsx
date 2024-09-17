@@ -4,15 +4,29 @@ import {
     Polyline,
     AdvancedMarker,
 } from "react-google-map-wrapper";
+import axios from 'axios'
 interface PolilyneMapProps {
-    onChangePolilyne: (data:any[]) => void;
-    polilyne?: any[];  
+    onChangePolilyne: (data: any[]) => void;
+    params: { linea: any, pd: any };
+
 }
 
-const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, polilyne }) => {
-    const [markers, setMarkers] = useState<any>(polilyne);
-    const [visible, setVisible] = useState(false);
+const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) => {
+    const param = params
 
+
+    const [markers, setMarkers] = useState<any>([]);
+    const [visible, setVisible] = useState(false);
+    console.log(markers)
+    useEffect(() => {
+        const fetchdata = async () =>{
+
+            const response = await axios.get(`/api/mapas/${param.pd}`);
+            console.log(response.data.polilyne)
+            setMarkers(response.data.polilyne)
+        }
+        fetchdata();
+    }, [param.pd]);
     const handleMarkerClick = (Event: any) => {
         const lt = Event.position.lat;
         const lg = Event.position.lng;

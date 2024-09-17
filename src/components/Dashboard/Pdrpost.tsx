@@ -28,7 +28,7 @@ const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
         fetchData();
     }, []);
     const polilyne = [
-        { idd: '-64.44807700000001', lat: '7.770603', lng: '-72.21868' }]
+        { id: -64.44807700000001, lat: 7.770603, lng: -72.21868 }]
     
     const handleForm = async (e: any) => {
         e.preventDefault();

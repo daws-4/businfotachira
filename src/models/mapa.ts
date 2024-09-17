@@ -3,22 +3,22 @@ import { Schema, model, models } from "mongoose";
 
 const polilyne = new Schema(
   {
-    idd:{
-      type: String,
+    id:{
+      type: Number,
       trim: true,
-      default:'-64.44807700000001'
+      default:-64.44807700000001
     },
     lat: {
-      type: String,
+      type: Number,
       required: true,
       trim: true,
-      default:'7.770603'
+      default:7.770603
     },
     lng: {
-      type: String,
+      type: Number,
       required: true,
       trim: true,
-      default:'-72.21868'
+      default:-72.21868
     },
   }
 )
@@ -26,17 +26,17 @@ const polilyne = new Schema(
 const pdr = new Schema(
   {
     id:{
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },
     lat:{
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },
     lng:{
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },

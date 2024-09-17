@@ -47,8 +47,6 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                 setNombre(response.data.nombre);
                 setRuta(response.data.ruta);
                 setPdr(response.data.pdr);
-                console.log(response.data.polilyne[0])
-                setPolilyne(response.data.polilyne[0]);
                 if (response.data.ruta === 1) {
                     setSector('San Cristóbal - Cárdenas');
                 } else if (response.data.ruta === 2) {
@@ -128,7 +126,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
         <>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
-                    <PolilyneMap polilyne={polilyne} onChangePolilyne={handlePolilyneChange} />
+                    <PolilyneMap params={param} onChangePolilyne={handlePolilyneChange} />
                 </GoogleMapApiLoader>
                 <button
                     onClick={() => handlePolilyneButton}
