@@ -1,13 +1,11 @@
 "use client";
-import dynamic from "next/dynamic";
 import React from "react";
-import Link from "next/link";
 import CardData from "../CardData";
-import Map from "@/components/mapas/Googlemaptest2";
-import GoogleMapComponent from "@/components/mapas/Googlemapstest";
+import PrincipalMap2 from "@/components/mapas/PrincipalMap2";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
 import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
+import SelectMapa from "@/components/SelectGroup/SelectMapa";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -18,12 +16,13 @@ interface CarteleraProps {
 }
 
 const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
-
+    const param= params
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [data, setData] = useState<any>([]);
     const [localidad, setLocalidad] = useState<number>();
     const [sector, setSector] = useState("San Cristóbal");
+    const [mapa, setMapa] = useState<any>();
 
     const router = useRouter();
     const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -95,9 +94,10 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             }
         }
     };
-
-
-
+    const handleMapaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setMapa(e.target.value)
+        console.log(mapa)
+    }; 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -129,14 +129,6 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     //falta mapear 
     return (
         <> 
-            <div className="sm:w-1/2 w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?? ''}>
-                    <GoogleMapComponent />
-            </GoogleMapApiLoader>
-                
-                </div>
-
-
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
                 <CardData
@@ -157,7 +149,12 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                 </CardData>
 
             </div>
-
+            <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <SelectMapa onChange={handleMapaChange} params={param}></SelectMapa>
+                <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
+                    <PrincipalMap2 id={mapa} params={param} />
+                </GoogleMapApiLoader>
+            </div>
             <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">

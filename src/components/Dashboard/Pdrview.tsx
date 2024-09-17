@@ -1,10 +1,8 @@
 "use client";
-import dynamic from "next/dynamic";
 import React from "react";
 import Link from "next/link";
 import CardData from "../CardData";
-import Map from "@/components/mapas/Googlemaptest2";
-import PolilyneMap from "@/components/mapas/PolilyneMap";
+import PrincipalMap from "@/components/mapas/PrincipalMap";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
 import SelectRuta from "@/components/SelectGroup/SelectRuta";
@@ -25,20 +23,12 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
     const [data, setData] = useState<any>([]);
     const [ruta, setRuta] = useState<any>();
     const [sector, setSector] = useState("San Cristóbal");
-    const [pdr, setPdr] = useState<any>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const router = useRouter();
     const handleRutaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setRuta(e.target.value)
         console.log(ruta)
     }; 
-    const handlePdrChange = (data: string) => {
-        setPdr(data)
-        console.log(pdr)
-    }
-    const handlePolilyneChange = (data: any[]) => {
-        setPolilyne(data)
-    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,7 +36,6 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                 setData(response.data);
                 setNombre(response.data.nombre);
                 setRuta(response.data.ruta);
-                setPdr(response.data.pdr);
                 if (response.data.ruta === 1) {
                     setSector('San Cristóbal - Cárdenas');
                 } else if (response.data.ruta === 2) {
@@ -89,9 +78,6 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
             }
         }
     };
-
-
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -118,25 +104,9 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
         hour: '2-digit',
         minute: '2-digit',
     });
-    //    const truncatedText = data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto;
-    const handlePolilyneButton = () => {
-        
-    }
+
     return (
         <>
-            <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
-                    <PolilyneMap params={param} onChangePolilyne={handlePolilyneChange} />
-                </GoogleMapApiLoader>
-                <button
-                    onClick={() => handlePolilyneButton}
-                    className="mt-5 mx-5 rounded bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                >
-                    Guardar Recorrido
-                </button>
-            </div>
-
-
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
                 <CardData
@@ -154,14 +124,34 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                     >
                         Eliminar
                     </button>
+                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/recorrido`}>
+                    <button
+                        className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                    >
+                        Actualizar Recorrido
+                    </button>
+                    </Link>
+                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/pdr`}>
+                    <button
+                        className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                    >
+                        Actualizar PDR
+                    </button>
+                    </Link>
                 </CardData>
-
             </div>
-
+            <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
+                    <PrincipalMap params={param} />
+                </GoogleMapApiLoader>
+            </div>
+            <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                
+            </div>
             <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Editar Ruta
+                        Editar Recorrido
                     </h3>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">

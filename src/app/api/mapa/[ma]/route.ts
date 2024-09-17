@@ -10,15 +10,15 @@ const jwtName = process.env.JWT_NAME;
   
 export async function GET(
   request: any,
-  { params }: { params: { map: string } }
+  { params }: { params: { ma: string } }
 ) {
   connectDB();
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const adminFound = await mapa.findOne({
-      _id: params.map,
+    const adminFound = await mapa.find({
+      ruta: params.ma,
     });
     if (!adminFound) {
       return NextResponse.json(
@@ -34,7 +34,7 @@ export async function GET(
 }
 export async function PUT(
   request: any,
-  { params }: { params: { map: string } }
+  { params }: { params: { ma: string } }
 ) {
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
@@ -42,7 +42,7 @@ export async function PUT(
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const {nombre, ruta, linea, pdr, polilyne} = await request.json();
     const updateAdmin = await mapa.findOneAndUpdate(
-      { _id: params.map },
+      { _id: params.ma },
       {nombre, ruta, linea, pdr, polilyne},
       { new: true }
     );
@@ -53,14 +53,14 @@ export async function PUT(
 }
 export async function DELETE(
   request: any,
-  { params }: { params: { map: string } }
+  { params }: { params: { ma: string } }
 ) {
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const deleteAdmin = await mapa.findOneAndDelete({
-      _id: params.map,
+      _id: params.ma,
     });
     if (!deleteAdmin) {
       return NextResponse.json(

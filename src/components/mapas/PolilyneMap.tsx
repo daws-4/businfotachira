@@ -5,6 +5,7 @@ import {
     AdvancedMarker,
 } from "react-google-map-wrapper";
 import axios from 'axios'
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 interface PolilyneMapProps {
     onChangePolilyne: (data: any[]) => void;
     params: { linea: any, pd: any };
@@ -17,12 +18,10 @@ const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) =
 
     const [markers, setMarkers] = useState<any>([]);
     const [visible, setVisible] = useState(false);
-    console.log(markers)
     useEffect(() => {
         const fetchdata = async () =>{
 
             const response = await axios.get(`/api/mapas/${param.pd}`);
-            console.log(response.data.polilyne)
             setMarkers(response.data.polilyne)
         }
         fetchdata();
@@ -32,7 +31,7 @@ const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) =
         const lg = Event.position.lng;
         const uid = lt + lg;
         setMarkers(markers.filter((marker: any) => marker.id != uid));
-        onChangePolilyne(markers);
+        onChangePolilyne(markers.filter((marker: any) => marker.id != uid));
     };
 
     const handleButton = () => {
@@ -40,6 +39,7 @@ const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) =
     }
     return (
         <>
+            <Breadcrumb params={param} pageName="Recorrido" />
             <GoogleMap className="h-[500px]"
                 initialZoom={14}
                 initialCenter={{ lat: 7.770603, lng: -72.21868 }}
@@ -65,7 +65,7 @@ const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) =
                     };
                     
                     setMarkers((p: any) => p.concat(newMarker));
-                    onChangePolilyne(markers);
+                    onChangePolilyne(markers.concat(newMarker));
                 }}
             >
                 {markers.map(({ lat, lng }: { lat: number, lng: number }, i: any) => (
@@ -79,7 +79,7 @@ const PolilyneMap: React.FC<PolilyneMapProps> = ({ onChangePolilyne, params }) =
                     geodesic
                 />
             </GoogleMap>
-            <button className="mt-5 mx-5 rounded bg-blue-700 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10" onClick={handleButton} >cambio de estado </button>
+            <button className="mt-5 mx-5 rounded bg-blue-700 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10" onClick={handleButton} >{visible? 'Mostrar Marcadores': 'Ocultar Marcadores'} </button>
         </>
     );
 }

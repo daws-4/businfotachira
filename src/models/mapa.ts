@@ -40,6 +40,11 @@ const pdr = new Schema(
       required: true,
       trim: true,
     },
+    nombre:{
+      type: String,
+      required: true,
+      trim: true,
+    },
   }
 )
 
