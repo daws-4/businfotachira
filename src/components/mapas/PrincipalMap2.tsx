@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react';
-import { GoogleMap, Polyline, PinElement, Marker, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
+import { useMapContext,Control, GoogleMap, Polyline, PinElement, Marker, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
 import { useState } from 'react';
 import axios from 'axios';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
@@ -9,10 +9,38 @@ interface PrincipalMap2Props {
     id?:any
 
 }
+const MapContent = () => {
+    const map = useMapContext();
+
+    const handleLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position: GeolocationPosition) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(pos)
+                }
+            );
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+    return (
+        <Control position={google.maps.ControlPosition.TOP_CENTER}>
+            <button onClick={handleLocation}>Center Map</button>
+        </Control>
+    );
+}
+
 const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
-    const [markers, setMarkers] = useState<any>([]);
+    const [center, setCenter] = useState({ lat: 7.770603, lng: -72.21868 })
+    const [markers, setMarkers] = useState<any>([{
+        id:- 64.44807700000001,lat:7.770603,lng:- 72.21868, _id:'66e8dfffddfb586a58aeb29f'
+    }]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const [data, setData] = useState<any>([]);
     const param = params
@@ -20,11 +48,15 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
         const fetchdata = async () => {
             console.log(id)
             try {
-                const response = await axios.get(`/api/mapa/${id}`);
+                const response = await axios.get(`/api/mapa/${params.taru}`);
+                const filteredData = response.data.filter((item: any) => item._id == id);
+                console.log(filteredData)
                 console.log(response.data)
-                setData(response.data);
-                setPolilyne(response.data.polilyne)
-                setMarkers(response.data.pdr)
+                setData(filteredData);
+                if(id){
+                setPolilyne(filteredData[0].polilyne)
+                console.log(filteredData[0].polilyne)
+                setMarkers(filteredData[0].pdr)}
             } catch (error) {
                 console.log(error)
             }
@@ -44,6 +76,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const handleMarkerClick = () => {
         window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
     };
+  
 
     return (
         <>
@@ -51,7 +84,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
 
             <GoogleMap className='h-[400px]'
                 initialZoom={14}
-                initialCenter={{ lat: 7.770603, lng: -72.21868 }}
+                initialCenter={center}
                 mapOptions={{
                     mapId: "efcd50ac9512e064",
                 }}
@@ -59,7 +92,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                     height: "400px",
                 }}
             >
-                {/* {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
+                {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
                     <InfoWindow content={<div id='content'>
                         <div id='siteNotice'></div>
                         <h1 id='firstHeading' className='firstHeading font-medium text-black'>{nombre}</h1>
@@ -72,7 +105,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                         open={isOpen === i}>
                         <AdvancedMarker onClick={() => handleOpen(i)} key={i} lat={lat} lng={lng} />
                     </InfoWindow>
-                ))} */}
+                ))}
                 <Polyline
                     path={polilyne}
                     strokeColor="#FF0000"
@@ -80,6 +113,8 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                     strokeWeight={2}
                     geodesic
                 />
+
+                <MapContent />
             </GoogleMap>
         </>
     );
