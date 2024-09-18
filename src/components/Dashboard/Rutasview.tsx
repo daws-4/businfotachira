@@ -23,6 +23,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const [localidad, setLocalidad] = useState<number>();
     const [sector, setSector] = useState("San Cristóbal");
     const [mapa, setMapa] = useState<any>();
+    const [mapData, setMapData] = useState<any>([]);
 
     const router = useRouter();
     const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -57,9 +58,13 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             } catch (error) {
                 router.push(`/dashboard/${params.linea}/rutas`);
             }
+            const response2 = await axios.get(`/api/mapa/${params.taru}`);
+            const filteredMap = response2.data.filter((item: any) => item._id == mapa);
+            console.log(filteredMap)
+            setMapData(filteredMap);
         };
         fetchData();
-    }, [params.taru]);
+    }, [params.taru, mapa]);
     useEffect(() => {
         if (data._id && params.taru != data._id) {
             router.push(`/dashboard/${params.linea}/rutas`);

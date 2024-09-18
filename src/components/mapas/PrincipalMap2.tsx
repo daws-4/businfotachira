@@ -4,39 +4,19 @@ import { useMapContext,Control, GoogleMap, Polyline, PinElement, Marker, Advance
 import { useState } from 'react';
 import axios from 'axios';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Image from 'next/image';
 interface PrincipalMap2Props {
     params: { linea: any, taru: any, };
     id?:any
 
 }
-const MapContent = () => {
-    const map = useMapContext();
-
-    const handleLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position: GeolocationPosition) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    map.setCenter(pos)
-                }
-            );
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    }
-    return (
-        <Control position={google.maps.ControlPosition.TOP_CENTER}>
-            <button onClick={handleLocation}>Center Map</button>
-        </Control>
-    );
-}
 
 const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
+    const [poslat, setPoslat] = useState(7.760603);
+    const [poslng, setPoslng] = useState(-72.22868);
+    const [posvis   , setPosvis] = useState(true);
     const [center, setCenter] = useState({ lat: 7.770603, lng: -72.21868 })
     const [markers, setMarkers] = useState<any>([{
         id:- 64.44807700000001,lat:7.770603,lng:- 72.21868, _id:'66e8dfffddfb586a58aeb29f'
@@ -44,18 +24,36 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const [polilyne, setPolilyne] = useState<any>([]);
     const [data, setData] = useState<any>([]);
     const param = params
+
+    const testFunction = () => {
+        setPoslat(7.760603)
+        setPoslng(-72.22868)
+        setPosvis(false)
+        console.log('xd')
+    }
+    useEffect(() => {
+        navigator.geolocation.watchPosition(
+            (position: GeolocationPosition) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                setPoslat(pos.lat)
+                setPoslng(pos.lng)
+                setPosvis(false)
+                console.log(pos)
+            }
+        );
+    },[]);
     useEffect(() => {
         const fetchdata = async () => {
             console.log(id)
             try {
                 const response = await axios.get(`/api/mapa/${params.taru}`);
                 const filteredData = response.data.filter((item: any) => item._id == id);
-                console.log(filteredData)
-                console.log(response.data)
                 setData(filteredData);
                 if(id){
                 setPolilyne(filteredData[0].polilyne)
-                console.log(filteredData[0].polilyne)
                 setMarkers(filteredData[0].pdr)}
             } catch (error) {
                 console.log(error)
@@ -89,7 +87,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                     mapId: "efcd50ac9512e064",
                 }}
                 style={{
-                    height: "400px",
+                    height: "600px",
                 }}
             >
                 {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
@@ -106,7 +104,11 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                         <AdvancedMarker onClick={() => handleOpen(i)} key={i} lat={lat} lng={lng} />
                     </InfoWindow>
                 ))}
-                <Polyline
+                <AdvancedMarker lat={poslat} lng={poslng} hidden={posvis}>
+                    <Image key={'xd'} width={32} height={32} alt={`Location Marker`} src={`/icons/gps_fixed_24dp_0000F5.png`}></Image>
+                </AdvancedMarker>
+                <Polyline 
+                    key={'polilyne'}
                     path={polilyne}
                     strokeColor="#FF0000"
                     strokeOpacity={1.0}
@@ -114,8 +116,8 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                     geodesic
                 />
 
-                <MapContent />
             </GoogleMap>
+            {/* <button className='mt-4 inline-flex items-center justify-center rounded-full bg-blue-600 px-2 py-4 text-center font-medium text-white hover:bg-opacity-90 ' onClick={testFunction}>Actualizar Ubicación</button> */}
         </>
     );
 }
