@@ -1,5 +1,33 @@
 import { Schema, model, models } from "mongoose";
 
+const defaultHora = new Schema(
+  {
+  pdr_id: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+    hora: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  }
+);
+
+const recorridos = new Schema(
+  {
+    nombre:{
+      type: String,
+      required: true,
+      trim: true,
+    },
+    defaultHora:{
+      type: [defaultHora],
+    }
+  }
+)
+
 
 const polilyne = new Schema(
   {
@@ -70,6 +98,9 @@ const mapa = new Schema(
       },
     polilyne: {
       type: [polilyne],
+    },
+    recorridos: {
+      type: [recorridos],
     }
   },
   {

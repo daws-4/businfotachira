@@ -32,44 +32,4 @@ export async function GET(
     return NextResponse.json((error as Error).message, { status: 400 });
   }
 }
-export async function PUT(
-  request: any,
-  { params }: { params: { ma: string } }
-) {
-  const cookieStore = cookies();
-  const token: any = cookieStore.get(jwtName as any);
-  try {
-       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const {nombre, ruta, linea, pdr, polilyne} = await request.json();
-    const updateAdmin = await mapa.findOneAndUpdate(
-      { _id: params.ma },
-      {nombre, ruta, linea, pdr, polilyne},
-      { new: true }
-    );
-  } catch (error) {
-    return NextResponse.json((error as Error).message, { status: 400 });
-  }
-  return NextResponse.json({ message: "Actualizando Datos" });
-}
-export async function DELETE(
-  request: any,
-  { params }: { params: { ma: string } }
-) {
-  const cookieStore = cookies();
-  const token: any = cookieStore.get(jwtName as any);
-  try {
-       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const deleteAdmin = await mapa.findOneAndDelete({
-      _id: params.ma,
-    });
-    if (!deleteAdmin) {
-      return NextResponse.json(
-        { message: "mapa no encontrado" },
-        { status: 404 }
-      );
-    }
-    return NextResponse.json(deleteAdmin);
-  } catch (error) {
-    return NextResponse.json((error as Error).message, { status: 400 });
-  }
-}
+//SOLO PARA BUSCAR POR RUTA

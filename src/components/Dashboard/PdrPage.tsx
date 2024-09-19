@@ -21,14 +21,7 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
     const [pdr, setPdr] = useState<any>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const router = useRouter();
-    const handlePdrChange = (data: any[]) => {
-        const updatedPdr = data.map((item: any, index: number) => ({
-            ...item,
-            nombre: `PDR ${index + 1}`,
-        }));
-        setPdr(updatedPdr)
-        console.log(updatedPdr)
-    }
+   
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,11 +42,22 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
         };
         fetchData();
     }, [params.pd]);
+
+    const handlePdrChange = (data: any[]) => {
+        const updatedPdr = data.map((item: any, index: number) => ({
+            ...item,
+            nombre: `PDR ${index + 1}`,
+        }));
+        setPdr(updatedPdr)
+        console.log(updatedPdr)
+    }
     useEffect(() => {
         if (data._id && params.pd != data._id) {
             router.push(`/dashboard/${params.linea}/pdr`);
         }
     }, [data, params.pd, params.linea, router]);
+
+    
     const date = new Date(data.createdAt);
     const formattedDate = date.toLocaleString('es-ES', {
         day: '2-digit',

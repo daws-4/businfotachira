@@ -20,9 +20,8 @@ const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
 
             const response = await axios.get(`/api/mapas/${param.pd}`);
             setPolilyne(response.data.polilyne)
-            const response2 = await axios.get(`/api/mapas/${param.pd}`);
-            setMarkers(response2.data.pdr)
-            onChangePdr(response2.data.pdr)
+            setMarkers(response.data.pdr)
+            onChangePdr(response.data.pdr)
         }
         fetchdata();
     }, [param.pd]);

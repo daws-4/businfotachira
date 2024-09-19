@@ -51,7 +51,7 @@ const PrincipalMap: React.FC<PrincipalMapProps> = ({ params }) => {
                 }}
             >
                 {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
-                    <InfoWindow content={<div id='content'>
+                    <InfoWindow key={i} content={<div id='content'>
                         <div id='siteNotice'></div>
                         <h1 id='firstHeading' className='firstHeading font-medium text-black'>{nombre}</h1>
                         <div id='bodyContent'>
@@ -65,6 +65,7 @@ const PrincipalMap: React.FC<PrincipalMapProps> = ({ params }) => {
                     </InfoWindow>
                 ))}
                 <Polyline
+                    key={'polilyne'}
                     path={polilyne}
                     strokeColor="#FF0000"
                     strokeOpacity={1.0}

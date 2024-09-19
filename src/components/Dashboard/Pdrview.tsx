@@ -9,7 +9,6 @@ import SelectRuta from "@/components/SelectGroup/SelectRuta";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
 
 
 interface CarteleraProps {
@@ -118,6 +117,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                     rate={formattedDate}
                     levelUp={data.levelUp}
                 >
+                    <div className="mt-5">
                     <button
                         onClick={() => handleDelete(data._id)}
                         className="inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
@@ -138,6 +138,14 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                         Actualizar PDR
                     </button>
                     </Link>
+                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/horario`}>
+                        <button
+                            className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                        >
+                            Horario por Defecto
+                        </button>
+                    </Link>
+                    </div>
                 </CardData>
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -146,7 +154,6 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                 </GoogleMapApiLoader>
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                
             </div>
             <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">

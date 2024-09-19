@@ -40,10 +40,10 @@ export async function PUT(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const {nombre, ruta, linea, pdr, polilyne} = await request.json();
+    const {nombre, ruta, linea, pdr, polilyne, recorridos} = await request.json();
     const updateAdmin = await mapa.findOneAndUpdate(
       { _id: params.map },
-      {nombre, ruta, linea, pdr, polilyne},
+      {nombre, ruta, linea, pdr, polilyne, recorridos},
       { new: true }
     );
   } catch (error) {

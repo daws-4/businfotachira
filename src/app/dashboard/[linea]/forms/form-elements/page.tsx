@@ -13,7 +13,7 @@ const FormElementsPage = ( { params }: { params: { linea: any }} ) => {
   const param = params
   return (
     <DefaultLayout params ={param}>
-      <FormElements />
+      <FormElements params={param} />
     </DefaultLayout>
   );
 };

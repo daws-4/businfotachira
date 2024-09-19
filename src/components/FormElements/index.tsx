@@ -14,10 +14,11 @@ import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import MultiSelect from "@/components/FormElements/MultiSelect";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 
-const FormElements = () => {
+const FormElements = ({ params }: { params: { linea: any } }) => {
+  const param = params;
   return (
     <>
-      <Breadcrumb pageName="FormElements" />
+      <Breadcrumb params={param} pageName="FormElements" />
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
