@@ -117,30 +117,30 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                     rate={formattedDate}
                     levelUp={data.levelUp}
                 >
-                    <div className="mt-5">
+                    <div className=" mt-5">
                     <button
                         onClick={() => handleDelete(data._id)}
-                        className="inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                        className="my-5 w-30 inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                     >
                         Eliminar
                     </button>
                     <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/recorrido`}>
                     <button
-                        className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                                className=" my-2 ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                     >
                         Actualizar Recorrido
                     </button>
                     </Link>
                     <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/pdr`}>
                     <button
-                        className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                                className="m-2  ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                     >
                         Actualizar PDR
                     </button>
                     </Link>
                     <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/horario`}>
                         <button
-                            className="ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            className="m-2 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Horario por Defecto
                         </button>

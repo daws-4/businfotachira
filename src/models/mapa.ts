@@ -2,8 +2,18 @@ import { Schema, model, models } from "mongoose";
 
 const defaultHora = new Schema(
   {
-  pdr_id: {
+    pdr_name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  array_id: {
     type: Number,
+    required: true,
+    trim: true,
+  },
+  pdr_id: {
+    type: String,
     required: true,
     trim: true,
   },
@@ -17,6 +27,11 @@ const defaultHora = new Schema(
 
 const recorridos = new Schema(
   {
+    index: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
     nombre:{
       type: String,
       required: true,
