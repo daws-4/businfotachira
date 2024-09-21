@@ -14,8 +14,8 @@ export async function POST(request: any) {
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { id, linea, ruta, fecha_hora, unidad } = await request.json();
-    const newUnidad = new horario({ id, linea, ruta, fecha_hora, unidad });
+    const {linea, ruta, recorrido, horarios} = await request.json();
+    const newUnidad = new horario({ linea, ruta, recorrido, horarios});
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);

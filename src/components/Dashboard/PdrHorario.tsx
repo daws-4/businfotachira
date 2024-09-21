@@ -34,7 +34,7 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
     }, [crArray, pdr.length]);
     useEffect(() => {
         if (data._id && params.pd != data._id) {
-            router.push(`/dashboard/${params.linea}/pdr`);
+            router.push(`/dashboard/${params.linea}/pdr/${params.pd}`);
         }
     }, [data, params.pd, params.linea, router]);
     const date = new Date(data.createdAt);
@@ -102,13 +102,17 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
     const endPage = Math.min(cRecorridos, startPage + 7) ;
 
     const handleUpload = async () => {
+           
+        const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los horarios?");
+        if (!confirm) return;
+
         try {
             const response = await axios.put(`/api/mapas/${params.pd}`, {
                 recorridos: crArray
             });
             if (response.status === 200) {
                 toast.success("Horarios asignados correctamente.");
-                router.push(`/dashboard/${params.linea}/pdr`);
+                router.push(`/dashboard/${params.linea}/pdr/${params.pd}`);
             } else {
                 toast.error("Error al asignar los horarios.");
             }

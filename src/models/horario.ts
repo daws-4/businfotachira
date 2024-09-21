@@ -1,11 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
 const horarios = new Schema({
-  unidad: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   fecha_hora: {
     type: Number,
     required: true,
@@ -19,6 +14,10 @@ const horarios = new Schema({
 })
 
 const horario = new Schema({
+    unidad: {
+    type: String,
+    trim: true,
+  },
   linea: {
     type: String,
     required: true,
@@ -31,6 +30,11 @@ const horario = new Schema({
   },
   recorrido:{
     type: String,
+    required: true,
+    trim: true,
+  },
+  fecha:{
+    type: Date,
     required: true,
     trim: true,
   },

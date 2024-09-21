@@ -9,7 +9,7 @@ import SelectRuta from "@/components/SelectGroup/SelectRuta";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import DataTable from 'react-data-table-component';
 
 interface CarteleraProps {
     params: { linea: any, pd: any };
@@ -27,7 +27,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
     const handleRutaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setRuta(e.target.value)
         console.log(ruta)
-    }; 
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,6 +49,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
+
     }, [params.pd]);
     useEffect(() => {
         if (data._id && params.pd != data._id) {
@@ -104,6 +105,48 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
         minute: '2-digit',
     });
 
+
+    interface DataRow {
+        pdr_name: any;
+        hora: any;
+    }
+
+    const columns = [
+        {
+            name: 'Punto de Referencia',
+            selector: (row: DataRow) => row.pdr_name,
+        },
+        {
+            name: 'Hora ',
+            selector: (row: DataRow) => row.hora,
+        },
+    ];
+    const dataTable: DataRow[] = Array.isArray(data.recorridos)
+        ? data.recorridos.flatMap((recorrido: any) => Array.isArray(recorrido.defaultHora) ? recorrido.defaultHora : [])
+        : [];
+    const hor4weeks = Array.isArray(data.recorridos)
+        ? data.recorridos.map((cr: any) => {
+            return {
+                index: cr.index,
+                nombre: cr.nombre,
+                defaultHora: Array.isArray(cr.defaultHora) ? cr.defaultHora : [],
+            }
+        })
+        : [];
+    const today = new Date();
+    const formatDate = today.toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+
+    console.log('Fecha de hoy:', formatDate);
+    console.log(hor4weeks)
+    
+    console.log(params.linea)
+    console.log(params.pd)
+    console.log(data._id)
+
     return (
         <>
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -118,33 +161,33 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                     levelUp={data.levelUp}
                 >
                     <div className=" mt-5">
-                    <button
-                        onClick={() => handleDelete(data._id)}
-                        className="my-5 w-30 inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    >
-                        Eliminar
-                    </button>
-                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/recorrido`}>
-                    <button
-                                className=" my-2 ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    >
-                        Actualizar Recorrido
-                    </button>
-                    </Link>
-                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/pdr`}>
-                    <button
-                                className="m-2  ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    >
-                        Actualizar PDR
-                    </button>
-                    </Link>
-                    <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/horario`}>
                         <button
-                            className="m-2 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            onClick={() => handleDelete(data._id)}
+                            className="my-5 w-30 inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Horario por Defecto
+                            Eliminar
                         </button>
-                    </Link>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/recorrido`}>
+                            <button
+                                className=" my-2 ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Actualizar Recorrido
+                            </button>
+                        </Link>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/pdr`}>
+                            <button
+                                className="m-2  ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Actualizar PDR
+                            </button>
+                        </Link>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/horario`}>
+                            <button
+                                className="m-2 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Horario por Defecto
+                            </button>
+                        </Link>
                     </div>
                 </CardData>
             </div>
@@ -154,6 +197,23 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                 </GoogleMapApiLoader>
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <h3 className="font-medium text-black dark:text-white">
+                    Horario por Defecto
+                </h3>
+                {dataTable.length > 0 ? (
+                    <DataTable
+                        paginationPerPage={data.pdr ? data.pdr.length : 1}
+                        paginationRowsPerPageOptions={data.pdr ? [data.pdr.length] : [1]}
+                        striped
+                        noDataComponent={"Loading..."}
+                        responsive
+                        pagination
+                        columns={columns}
+                        data={dataTable}
+                    />
+                ) : (
+                    <p>No data available</p>
+                )}
             </div>
             <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -171,7 +231,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                                             Nombre
                                         </label>
                                         <input
-                                        value={nombre}
+                                            value={nombre}
                                             type="text"
                                             required
                                             onChange={(e) => setNombre(e.target.value)}
@@ -186,7 +246,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                                 type="submit"
                                 className="inline-flex items-center justify-center rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                             >
-                                Actualizar parte de la ruta 
+                                Actualizar parte de la ruta
                             </button>
                         </form>
                     </div>

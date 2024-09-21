@@ -68,8 +68,12 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
     });
     //    const truncatedText = data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto;
     const handlePdrButton = async () => {
+        
+        const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los PDR?");
+        if (!confirm) return;
         try {
             const response = await axios.put(`/api/mapas/${params.pd}`, {
+                recorridos: [],
                 pdr:pdr
             });
             if(pdr.length === 1){
