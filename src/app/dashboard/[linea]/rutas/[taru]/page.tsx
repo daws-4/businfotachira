@@ -9,7 +9,6 @@ export const metadata: Metadata = {
     "BusInfoTáchira - App de transporte público para el estado Táchira, Venezuela",
   description: "Visualización de rutas de transporte público en el estado Táchira, Venezuela",
 };
-
 export default function Home({ params }: { params: { linea: any, taru: any  }    }) {
   const param = params;
   return (

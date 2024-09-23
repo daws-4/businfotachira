@@ -19,6 +19,7 @@
     "jsvectormap": "^1.6.0",
     "mongoose": "^8.6.0",
     "next": "^14.2.11",
+    "node-cron": "^3.0.3",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
     "react-data-table-component": "^7.6.2",

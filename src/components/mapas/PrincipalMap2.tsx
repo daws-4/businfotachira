@@ -1,17 +1,25 @@
 'use client'
 import React, { useEffect } from 'react';
-import { useMapContext,Control, GoogleMap, Polyline, PinElement, Marker, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
+import { useMapContext,Control, GoogleMap, Polyline, PinElement, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
 import { useState } from 'react';
 import axios from 'axios';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from 'next/image';
+import { ObjectId, Schema } from 'mongoose';
 interface PrincipalMap2Props {
     params: { linea: any, taru: any, };
     id?:any
-
+    todayData?:any
+}
+interface Marker {
+    lat: number;
+    lng: number;
+    _id: string;
+    nombre?: string;
+    horaCercana?: string;
 }
 
-const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
+const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id, todayData }) => {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [poslat, setPoslat] = useState(7.760603);
@@ -21,16 +29,12 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const [markers, setMarkers] = useState<any>([{
         id:- 64.44807700000001,lat:7.770603,lng:- 72.21868, _id:'66e8dfffddfb586a58aeb29f'
     }]);
+    const [markersConHoras, setMarkersConHoras] = useState<Marker[]>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const [data, setData] = useState<any>([]);
+    const [fechas, setFechas] = useState<any>([]);
     const param = params
 
-    const testFunction = () => {
-        setPoslat(7.760603)
-        setPoslng(-72.22868)
-        setPosvis(false)
-        console.log('xd')
-    }
     useEffect(() => {
         navigator.geolocation.watchPosition(
             (position: GeolocationPosition) => {
@@ -41,13 +45,11 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                 setPoslat(pos.lat)
                 setPoslng(pos.lng)
                 setPosvis(false)
-                console.log(pos)
             }
         );
     },[]);
     useEffect(() => {
         const fetchdata = async () => {
-            console.log(id)
             try {
                 const response = await axios.get(`/api/mapa/${params.taru}`);
                 const filteredData = response.data.filter((item: any) => item._id == id);
@@ -74,8 +76,44 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
     const handleMarkerClick = () => {
         window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
     };
-  
+    useEffect(() => {
+        setFechas(todayData)
+        console.log(todayData)
+    },[fechas, todayData])
+    // Función para encontrar la próxima hora más cercana a la hora actual para cada punto de referencia
+    const getHoraMasCercana = (horarios: any[], pdr_id: string) => {
+        const now = new Date();
+        const horaActual = now.getHours() * 60 + now.getMinutes(); // Convertir hora actual a minutos
+        const horasPdr = horarios.filter(horario => horario.pdr_id === pdr_id);
+        let horaMasCercana = null;
+        let diferenciaMinima = Infinity;
 
+        horasPdr.forEach(horario => {
+            const [horas, minutos] = horario.hora.split(':').map(Number);
+            const horaHorario = horas * 60 + minutos; // Convertir hora del horario a minutos
+
+            const diferencia = horaHorario - horaActual;
+
+            if (diferencia >= 0 && diferencia < diferenciaMinima) {
+                diferenciaMinima = diferencia;
+                horaMasCercana = horario.hora;
+            }
+        });
+
+        return horaMasCercana;
+    };
+
+    useEffect(() => {
+        const calcularHorasCercanas = () => {
+            const nuevosMarkersConHoras = markers.map((marker: Marker) => {
+                const horaCercana = getHoraMasCercana(fechas, marker._id);
+                return { ...marker, horaCercana };
+            });
+            setMarkersConHoras(nuevosMarkersConHoras);
+        };
+
+        calcularHorasCercanas();
+    }, [fechas, markers]);
     return (
         <>
             <Breadcrumb params={param} pageName="Mapas" />
@@ -90,13 +128,15 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id }) => {
                     height: "600px",
                 }}
             >
-                {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
+                {markersConHoras.map(({ lat, lng, nombre, _id, horaCercana }, i) => (
                     <InfoWindow content={<div id='content'>
                         <div id='siteNotice'></div>
                         <h1 id='firstHeading' className='firstHeading font-medium text-black'>{nombre}</h1>
                         <div id='bodyContent'>
                             <h5 onClick={handleMarkerClick} className='cursor-pointer'>
-                                Abrir Ubicación en Google Maps
+                                {horaCercana ? `La próxima unidad pasa a las ${horaCercana}` : 'No hay unidades próximas'}
+                                <br />
+                                Presiona para abrir en google maps
                             </h5>
                         </div>
                     </div>} onCloseClick={handleClose}

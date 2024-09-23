@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import CardData from "../CardData";
+import CardData from "@/components/CardData";
 import PrincipalMap2 from "@/components/mapas/PrincipalMap2";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
 import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
 import SelectMapa from "@/components/SelectGroup/SelectMapa";
-import SelectDate from "../SelectGroup/SelectDate";
+import SelectDate from "@/components/SelectGroup/SelectDate";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ interface CarteleraProps {
 }
 
 const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
-    const param= params
+    const param = params
     const [fecha, setFecha] = useState<any>();
     const [fechas, setFechas] = useState<any>([]);
     const [nombre, setNombre] = useState("");
@@ -60,13 +60,13 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                     setSector('San Cristóbal - Cárdenas');
                 } else if (response.data.localidad === 2) {
                     setSector('San Cristóbal - Torbes');
-                }else if (response.data.localidad === 3) {
+                } else if (response.data.localidad === 3) {
                     setSector('San Cristóbal - Guásimos');
-                }else if (response.data.localidad === 4) {
+                } else if (response.data.localidad === 4) {
                     setSector('San Cristóbal - Andrés Bello');
                 }
 
-                
+
             } catch (error) {
                 router.push(`/dashboard/${params.linea}/rutas`);
             }
@@ -79,8 +79,8 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                 const response3 = await axios.get(`/api/horarios/${mapa}`);
                 console.log(response3)
                 setHorarios(response3.data);
-}
-            
+            }
+
 
         };
         fetchData();
@@ -122,13 +122,13 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const handleMapaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setMapa(e.target.value)
         console.log(mapa)
-    }; 
+    };
     const handleFechaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFecha(e.target.value)
         setFilteredDataTable(dataTable.filter((item: DataRow) => item.fecha === e.target.value));
         console.log(filteredDataTable)
         console.log(fecha)
-    }; 
+    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -163,8 +163,8 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         fecha: any;
         pdr_name: any;
         hora: any;
-        pdr_id:any;
-        unidad:any
+        pdr_id: any;
+        unidad: any
 
     }
     const columns = [
@@ -190,9 +190,9 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     useEffect(() => {
 
 
-            const test1 = horarios.flatMap((horario: any) => horario.hor4weeks) 
-            const horariosMaped:any = test1.flatMap((hor4week: any) => hor4week.defaultHora)
-            const fechaTest =horarios.map((horario: any) => horario.fecha)
+        const test1 = horarios.flatMap((horario: any) => horario.hor4weeks)
+        const horariosMaped: any = test1.flatMap((hor4week: any) => hor4week.defaultHora)
+        const fechaTest = horarios.map((horario: any) => horario.fecha)
         // Convertir fechas de string dd/mm/yyyy a Date
         const fechasConvertidas = fechaTest.map((fecha: string) => {
             const [day, month, year] = fecha.split('/');
@@ -210,7 +210,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             return `${day}/${month}/${year}`;
         });
         setFechas(fechasOrdenadas);
-        const updatedDataTable: DataRow[] = horariosMaped? horariosMaped : [];
+        const updatedDataTable: DataRow[] = horariosMaped ? horariosMaped : [];
         setDataTable(updatedDataTable);
         console.log(updatedDataTable);
         const filtrarPorFechaActual = (horarios: any[]) => {
@@ -229,9 +229,9 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         setFilteredTodayDataTable(elementosFechaActual);
 
     }, [horarios]);
-//paginationperpage = hor4weeks.length * deafultHora.length
+    //paginationperpage = hor4weeks.length * deafultHora.length
     return (
-        <> 
+        <>
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
                 <CardData
@@ -260,11 +260,11 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className='grid grid-cols-1 md:grid-cols-2'>
-                <h3 className="font-medium text-black dark:text-white">
-                    Horario por Defecto
-                </h3>
-                <div hidden={!dataTable.length}>
-                    <SelectDate fechas={fechas} onChange={handleFechaChange}></SelectDate>
+                    <h3 className="font-medium text-black dark:text-white">
+                        Horario por Defecto
+                    </h3>
+                    <div hidden={!dataTable.length}>
+                        <SelectDate fechas={fechas} onChange={handleFechaChange}></SelectDate>
                     </div>
                 </div>
                 {dataTable.length > 0 ? (

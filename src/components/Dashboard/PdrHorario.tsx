@@ -105,72 +105,47 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
     const endPage = Math.min(cRecorridos, startPage + 7) ;
 
     const handleUpload = async () => {
-        const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los horarios?");
-        if (confirm) {
+            const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los horarios?");
+            if (confirm) {
+                const today = new Date();
+                const generateDataArray = (startDate: Date, days: number) => {
+                    const dataArray = [];
+                    for (let i = 0; i < days; i++) {
+                        const newDate = new Date(startDate);
+                        newDate.setDate(startDate.getDate() + i);
+                        const formattedDate = newDate.toLocaleString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        });
 
-            const hor4weeks = Array.isArray(crArray)
-                ? crArray.map((cr: any) => {
-                    return {
-                        index: cr.index,
-                        nombre: cr.nombre,
-                        defaultHora: Array.isArray(cr.defaultHora) ? cr.defaultHora : [],
+                        const hor4weeks = Array.isArray(crArray)
+                            ? crArray.map((cr: any) => {
+                                return {
+                                    index: cr.index,
+                                    nombre: cr.nombre,
+                                    defaultHora: Array.isArray(cr.defaultHora)
+                                        ? cr.defaultHora.map((hora: any) => ({
+                                            ...hora,
+                                            fecha: formattedDate, // Añadir la fecha correspondiente
+                                        }))
+                                        : [],
+                                };
+                            })
+                            : [];
+
+                        dataArray.push({
+                            fecha: formattedDate,
+                            hor4weeks,
+                            linea: params.linea,
+                            recorrido: params.pd,
+                            ruta: data.ruta,
+                        });
                     }
-                })
-                : [];
-            const today = new Date();
-            const formatDate = today.toLocaleString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            });
-            console.log('Fecha de hoy:', formatDate);
-            console.log(hor4weeks)
+                    return dataArray;
+                };
 
-            console.log(params.linea)
-            console.log(params.pd)
-            console.log(data)
-            const generateDataArray = (startDate: Date, days: number) => {
-                const dataArray = [];
-                for (let i = 0; i < days; i++) {
-                    const newDate = new Date(startDate);
-                    newDate.setDate(startDate.getDate() + i);
-                    const formattedDate = newDate.toLocaleString('es-ES', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                    });
-                    dataArray.push({
-                        fecha: formattedDate,
-                        hor4weeks,
-                        linea: params.linea,
-                        recorrido: params.pd,
-                        ruta: data.ruta,
-                    });
-                }
-                return dataArray;
-            };
-            // const getDaysParameter = (dayOfWeek: number) => {
-            //     switch (dayOfWeek) {
-            //         case 0: // Sunday
-            //             return 28;
-            //         case 6: // Saturday
-            //             return 27;
-            //         case 5: // Friday
-            //             return 26;
-            //         case 4: // Thursday
-            //             return 25;
-            //         case 3: // Wednesday
-            //             return 24;
-            //         case 2: // Tuesday
-            //             return 23;
-            //         case 1: // Monday
-            //             return 22;
-            //         default:
-            //             return 28;
-            //     }
-            // };
-            // const daysParameter = getDaysParameter(today.getDay());
-            const dataArray = generateDataArray(today, 28);
+                const dataArray = generateDataArray(today, 28);
             console.log(dataArray);
             try {
                 const response0 = await axios.delete(`/api/horarios/${data._id}`);

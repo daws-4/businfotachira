@@ -2,7 +2,8 @@ import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import horario from "@/models/horario";
+import horarios from "@/models/horarios";
+import { ObjectId } from 'mongodb';
 const jwtName = process.env.JWT_NAME;
     if (!jwtName) {
       throw new Error("JWT_NAME is not defined in environment variables");
@@ -17,10 +18,9 @@ export async function GET(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const adminFound = await horario.findOne({
-      id: params.hor,
+    const adminFound = await horarios.find({
+      recorrido: params.hor,
     });
-    console.log(adminFound);
     if (!adminFound) {
       return NextResponse.json(
         { message: "horario no encontrado" },
@@ -43,7 +43,7 @@ export async function PUT(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const { linea, ruta, recorrido, hor4weeks, fecha} = await request.json();
-    const updateAdmin = await horario.findOneAndUpdate(
+    const updateAdmin = await horarios.findOneAndUpdate(
       { id: params.hor },
       { linea, ruta, recorrido, hor4weeks, fecha },
       { new: true }
@@ -62,7 +62,7 @@ export async function DELETE(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const deleteAdmin = await horario.deleteMany({
+    const deleteAdmin = await horarios.deleteMany({
       recorrido: params.hor,
     });
     console.log(deleteAdmin);
