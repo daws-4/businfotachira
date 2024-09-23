@@ -1,16 +1,44 @@
 import { Schema, model, models } from "mongoose";
-
-const horarios = new Schema({
-  fecha_hora: {
+const defaultHora = new Schema(
+  {
+    pdr_name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  array_id: {
     type: Number,
     required: true,
     trim: true,
-},
-  pdr_id:{
-  type: Number,
-  required: true,
-  trim: true,
-},  
+  },
+  pdr_id: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+    hora: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  }
+);
+
+const hor = new Schema({
+  index: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+  nombre: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  defaultHora: {
+    type: [defaultHora],
+    required: true,
+  }
 })
 
 const horario = new Schema({
@@ -34,12 +62,13 @@ const horario = new Schema({
     trim: true,
   },
   fecha:{
-    type: Date,
-    required: true,
+    type: String,
     trim: true,
+    required: true,
   },
-  horarios:{
-    type: [horarios],
+  hor4weeks:{
+    type: [hor],
+    required: true,
   }
 },
   {

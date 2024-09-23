@@ -94,6 +94,9 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
         e.preventDefault();
         setTimeObjects([]);
         clearInputs();
+        if (currentPage == cRecorridos){
+            handleUpload();
+        }
         if (currentPage < cRecorridos) {
             setCurrentPage(currentPage + 1);
         }
@@ -102,24 +105,105 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
     const endPage = Math.min(cRecorridos, startPage + 7) ;
 
     const handleUpload = async () => {
-           
         const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los horarios?");
-        if (!confirm) return;
+        if (confirm) {
 
-        try {
-            const response = await axios.put(`/api/mapas/${params.pd}`, {
-                recorridos: crArray
+            const hor4weeks = Array.isArray(crArray)
+                ? crArray.map((cr: any) => {
+                    return {
+                        index: cr.index,
+                        nombre: cr.nombre,
+                        defaultHora: Array.isArray(cr.defaultHora) ? cr.defaultHora : [],
+                    }
+                })
+                : [];
+            const today = new Date();
+            const formatDate = today.toLocaleString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
             });
-            if (response.status === 200) {
-                toast.success("Horarios asignados correctamente.");
-                router.push(`/dashboard/${params.linea}/pdr/${params.pd}`);
-            } else {
+            console.log('Fecha de hoy:', formatDate);
+            console.log(hor4weeks)
+
+            console.log(params.linea)
+            console.log(params.pd)
+            console.log(data)
+            const generateDataArray = (startDate: Date, days: number) => {
+                const dataArray = [];
+                for (let i = 0; i < days; i++) {
+                    const newDate = new Date(startDate);
+                    newDate.setDate(startDate.getDate() + i);
+                    const formattedDate = newDate.toLocaleString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    });
+                    dataArray.push({
+                        fecha: formattedDate,
+                        hor4weeks,
+                        linea: params.linea,
+                        recorrido: params.pd,
+                        ruta: data.ruta,
+                    });
+                }
+                return dataArray;
+            };
+            // const getDaysParameter = (dayOfWeek: number) => {
+            //     switch (dayOfWeek) {
+            //         case 0: // Sunday
+            //             return 28;
+            //         case 6: // Saturday
+            //             return 27;
+            //         case 5: // Friday
+            //             return 26;
+            //         case 4: // Thursday
+            //             return 25;
+            //         case 3: // Wednesday
+            //             return 24;
+            //         case 2: // Tuesday
+            //             return 23;
+            //         case 1: // Monday
+            //             return 22;
+            //         default:
+            //             return 28;
+            //     }
+            // };
+            // const daysParameter = getDaysParameter(today.getDay());
+            const dataArray = generateDataArray(today, 28);
+            console.log(dataArray);
+            try {
+                const response0 = await axios.delete(`/api/horarios/${data._id}`);
+                const response = await axios.put(`/api/mapas/${params.pd}`, {
+                    recorridos: crArray
+                });
+                dataArray.map(async (data: any) => {
+                    console.log(data.hor4weeks)
+                    const response1 = await axios.post(`/api/horarios/`, {
+
+                        fecha: data.fecha,
+                        hor4weeks: data.hor4weeks,
+                        linea: data.linea,
+                        ruta: data.ruta,
+                        recorrido: data.recorrido,
+                    })
+                })
+
+                if (response.status === 200) {
+                    toast.success("Horarios asignados correctamente.");
+                    router.push(`/dashboard/${params.linea}/pdr/${params.pd}`);
+                } else {
+                    toast.error("Error al asignar los horarios.");
+                }
+            } catch (error) {
+                window.location.reload()
+                // console.log(error);
                 toast.error("Error al asignar los horarios.");
             }
-        } catch (error) {
-            window.location.reload()
-            // console.log(error);
-            toast.error("Error al asignar los horarios.");
+        }else{
+
+            clearInputs();
+            setCurrentPage(1)
         }
     }
 
@@ -138,7 +222,6 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
                     <div
                         hidden={currentPage != cRecorridos} className='sm:ml-5 sm:mt-5'>
                         <button
-                            onClick={handleUpload}
                             className="mt-4 ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
                             Asignar Horario por Defecto

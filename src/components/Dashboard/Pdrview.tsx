@@ -124,29 +124,7 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
     const dataTable: DataRow[] = Array.isArray(data.recorridos)
         ? data.recorridos.flatMap((recorrido: any) => Array.isArray(recorrido.defaultHora) ? recorrido.defaultHora : [])
         : [];
-    const hor4weeks = Array.isArray(data.recorridos)
-        ? data.recorridos.map((cr: any) => {
-            return {
-                index: cr.index,
-                nombre: cr.nombre,
-                defaultHora: Array.isArray(cr.defaultHora) ? cr.defaultHora : [],
-            }
-        })
-        : [];
-    const today = new Date();
-    const formatDate = today.toLocaleString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
-
-    console.log('Fecha de hoy:', formatDate);
-    console.log(hor4weeks)
     
-    console.log(params.linea)
-    console.log(params.pd)
-    console.log(data._id)
-
     return (
         <>
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

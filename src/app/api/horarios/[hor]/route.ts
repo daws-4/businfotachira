@@ -42,10 +42,10 @@ export async function PUT(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { id, linea, ruta, fecha_hora, unidad } = await request.json();
+    const { linea, ruta, recorrido, hor4weeks, fecha} = await request.json();
     const updateAdmin = await horario.findOneAndUpdate(
       { id: params.hor },
-      { id, linea, ruta, fecha_hora, unidad },
+      { linea, ruta, recorrido, hor4weeks, fecha },
       { new: true }
     );
     console.log(updateAdmin);
@@ -62,8 +62,8 @@ export async function DELETE(
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const deleteAdmin = await horario.findOneAndDelete({
-      id: params.hor,
+    const deleteAdmin = await horario.deleteMany({
+      recorrido: params.hor,
     });
     console.log(deleteAdmin);
     if (!deleteAdmin) {
