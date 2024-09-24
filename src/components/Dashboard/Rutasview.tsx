@@ -19,8 +19,8 @@ interface CarteleraProps {
 }
 
 const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
-    const param= params
-    const [fecha, setFecha] = useState<any>();
+    const param = params
+    const [fecha, setFecha] = useState<string | null>(null);
     const [fechas, setFechas] = useState<any>([]);
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
@@ -34,7 +34,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const [filteredTodayDataTable, setFilteredTodayDataTable] = useState<DataRow[]>([]);
     const [horarios, setHorarios] = useState<any>([]);
     const [PperPage, setPperPage] = useState<number>();
-
+    
     const router = useRouter();
     const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (e.target.value === "0") {
@@ -120,8 +120,10 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         }
     };
     const handleMapaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFecha(null)
         setMapa(e.target.value)
-        console.log(mapa)
+        setFilteredDataTable([])
+        
     }; 
     const handleFechaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFecha(e.target.value)
@@ -264,7 +266,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                     Horario por Defecto
                 </h3>
                 <div hidden={!dataTable.length}>
-                    <SelectDate fechas={fechas} onChange={handleFechaChange}></SelectDate>
+                        <SelectDate fechas={fechas} onChange={handleFechaChange} fecha={fecha} setFecha={setFecha}></SelectDate>
                     </div>
                 </div>
                 {dataTable.length > 0 ? (

@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 
 interface SelectDateProps {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    fechas?: any;
+    fechas: any;
+    fecha: string | null;
+    setFecha: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const SelectDate: React.FC<SelectDateProps> = ({ onChange, fechas}) => {
+const SelectDate: React.FC<SelectDateProps> = ({ onChange, fechas, fecha, setFecha }) => {
     const [selectedOption, setSelectedOption] = useState<string>("");
     const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
     
@@ -28,8 +30,8 @@ const SelectDate: React.FC<SelectDateProps> = ({ onChange, fechas}) => {
             <div className="relative z-20 bg-transparent dark:bg-form-input">
                 <select
                 required
-                    value={selectedOption}
-                    onChange={(e) => {
+                    value={fecha ?? ''} onChange={(e) => {
+                        setFecha(e.target.value);
                         setSelectedOption(e.target.value);
                         changeTextColor();
                         onChange(e); 

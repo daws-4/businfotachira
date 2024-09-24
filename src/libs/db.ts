@@ -2,6 +2,8 @@ import {connect, connection} from "mongoose";
 const conn ={
     isConnected: false
 }
+connection.setMaxListeners(40);
+
 export async function connectDB() {
     if (conn.isConnected) {
         return

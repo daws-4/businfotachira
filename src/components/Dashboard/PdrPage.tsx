@@ -72,6 +72,8 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
         const confirm = window.confirm("En caso de tener horarios ya creados estos se eliminarán, ¿Actualizar los PDR?");
         if (!confirm) return;
         try {
+
+            const response0 = await axios.delete(`/api/horarios/${data._id}`);
             const response = await axios.put(`/api/mapas/${params.pd}`, {
                 recorridos: [],
                 pdr:pdr
