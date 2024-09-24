@@ -38,7 +38,7 @@ const Unidadesview: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
-    }, [params.unida]);
+    }, [params.unida, params.linea, router]);
     useEffect(() => {
         if (data.placa && params.unida != data.placa) {
             router.push(`/dashboard/${params.linea}/unidades`);

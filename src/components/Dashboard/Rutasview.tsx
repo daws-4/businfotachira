@@ -84,7 +84,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
         };
         fetchData();
-    }, [params.taru, mapa]);
+    }, [params.taru, mapa, params.linea, router]);
     useEffect(() => {
         if (data._id && params.taru != data._id) {
             router.push(`/dashboard/${params.linea}/rutas`);
@@ -194,7 +194,8 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
             const test1 = horarios.flatMap((horario: any) => horario.hor4weeks) 
             const horariosMaped:any = test1.flatMap((hor4week: any) => hor4week.defaultHora)
-            const fechaTest =horarios.map((horario: any) => horario.fecha)
+            const fechaTest = horarios.map((horario: any) => horario.fecha)
+            console.log(fechaTest)
         // Convertir fechas de string dd/mm/yyyy a Date
         const fechasConvertidas = fechaTest.map((fecha: string) => {
             const [day, month, year] = fecha.split('/');
@@ -212,6 +213,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             return `${day}/${month}/${year}`;
         });
         setFechas(fechasOrdenadas);
+        console.log(fechasOrdenadas)
         const updatedDataTable: DataRow[] = horariosMaped? horariosMaped : [];
         setDataTable(updatedDataTable);
         console.log(updatedDataTable);

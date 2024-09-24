@@ -1,25 +1,10 @@
 "use client";
-import dynamic from "next/dynamic";
 import React from "react";
-import Link from "next/link";
-import ChartOne from "../Charts/ChartOne";
-import ChartTwo from "../Charts/ChartTwo";
-import ChatCard from "../Chat/ChatCard";
-import TableOne from "../Tables/TableOne";
 import CardData from "../CardData";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
-
-const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
-    ssr: false,
-});
-
-const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
-    ssr: false,
-});
 
 interface CarteleraProps {
     params: { linea: any, poste: any };
@@ -45,7 +30,7 @@ const Post: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
-    }, [params.poste]);
+    }, [params.poste, params.linea, router]);
     useEffect(() => {
         if (data.id && params.poste != data._id) {
             router.push(`/dashboard/${params.linea}`);

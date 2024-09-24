@@ -1,25 +1,41 @@
-import {connect, connection} from "mongoose";
-const conn ={
+import mongoose from 'mongoose';
+
+const conn = {
     isConnected: false
-}
-connection.setMaxListeners(40);
+};
+
+mongoose.connection.setMaxListeners(40);
 
 export async function connectDB() {
     if (conn.isConnected) {
-        return
+        return;
     }
 
-    const db = await connect('mongodb://localhost:27017/businfotachira', )
-    console.log(db.connection?.db?.databaseName)
-    conn.isConnected = db.connections[0].readyState === 1;
+    const dburl = process.env.MONGODB;
+
+    if (!dburl) {
+        throw new Error("MongoDB URL is undefined");
+    }
+
+    try {
+        const db = await mongoose.connect('mongodb://localhost:27017/businfotachira');
+
+        console.log(`Connected to database: ${db.connection.db?.databaseName}`);
+        conn.isConnected = db.connections[0].readyState === 1;
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        throw new Error('Failed to connect to MongoDB');
+    }
 }
 
-    connection.on ('connected', () => {
-        console.log('Mongo Connection Established')
-    })
+mongoose.connection.on('connected', () => {
+    console.log('Mongo Connection Established');
+});
 
-    connection.on('err', (err) => {
-        console.log('Mongo Connection error', err)
-    })
+mongoose.connection.on('error', (err) => {
+    console.log('Mongo Connection error', err);
+});
 
-
+mongoose.connection.on('disconnected', () => {
+    console.log('Mongo Connection Disconnected');
+});

@@ -26,7 +26,7 @@ const Pdrpost: React.FC<CarteleraProps> = ({ params }) => {
             setData(response.data.filter((item: any) => item.linea === params.linea));
         };
         fetchData();
-    }, []);
+    }, [params.linea]);
     const polilyne = [
         { id: -64.44807700000001, lat: 7.770603, lng: -72.21868 }]
     

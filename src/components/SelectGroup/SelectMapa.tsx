@@ -21,7 +21,7 @@ const SelectMapa: React.FC<SelectMapaProps> = ({ onChange, params }) => {
             console.log(response.data);
         };
         fetchData();
-    }, []);
+    }, [ params.linea, params.taru]);
 
     const changeTextColor = () => {
         setIsOptionSelected(true);

@@ -11,11 +11,13 @@ import {
   ShowHideButtom,
   SingInButtom,
 } from "../../components/ui/index";
+import { set } from "mongoose";
 
 
 
 export default function Home() {
   const [user, setUser] = useState<any>({});
+  const [username, setUsername] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const router = useRouter();
@@ -37,6 +39,7 @@ export default function Home() {
       try{const response =await axios.post('/api/auth/login', credencials)
       const usuario = await axios.get("/api/auth/cookie");
       setUser(usuario);
+      setUsername(usuario.data.username);
       console.log(response)
       console.log(usuario)
 
@@ -57,7 +60,7 @@ export default function Home() {
       });
 
       setTimeout(() => {
-        router.push(`/dashboard/${user.data.username}`);
+        router.push(`/dashboard/${username}`);
       }, 100);
 
       setShowSuccessToast(false);
@@ -72,7 +75,7 @@ export default function Home() {
 
       setShowErrorToast(false);
     }
-  }, [showSuccessToast, showErrorToast, router]);
+  }, [showSuccessToast, showErrorToast, router, username]);
 
   const [showPassword, setShowPassword] = useState(false);
 

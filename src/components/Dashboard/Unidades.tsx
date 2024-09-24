@@ -19,7 +19,7 @@ const Unidades: React.FC<CarteleraProps> = ({ params }) => {
             setData(response.data.filter((item: any) => item.linea === params.linea));
         };
         fetchData();
-    }, []);
+    }, [params.linea]);
     return (
         <>
             <div className="pb-10 grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6 xl:grid-cols-2 2xl:gap-7.5">

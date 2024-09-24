@@ -33,7 +33,7 @@ const Ajustes = ({ params }: { params: { linea: any } }) => {
 
         };
         fetchData();
-    }, []);
+    }, [params.linea]);
     const handleTelefonoFijoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newTelefonoFijo = event.target.value;
         setTelefonoFijo(newTelefonoFijo);

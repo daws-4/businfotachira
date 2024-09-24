@@ -49,7 +49,7 @@ const PdrPolilyne: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
-    }, [params.pd]);
+    }, [params.pd, params.linea, router]);
     useEffect(() => {
         if (data._id && params.pd != data._id) {
             router.push(`/dashboard/${params.linea}/pdr`);

@@ -37,7 +37,7 @@ const Preciosview: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
-    }, [params.prep]);
+    }, [params.prep, params.linea, router]);    
     useEffect(() => {
         if (data._id && params.prep != data._id) {
             router.push(`/dashboard/${params.linea}/precios`);

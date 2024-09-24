@@ -1,149 +1,97 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import CardData from "@/components/CardData";
-import PrincipalMap2 from "@/components/mapas/PrincipalMap2";
+import PrincipalMap from "@/components/mapas/PrincipalMap";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
-import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
-import SelectMapa from "@/components/SelectGroup/SelectMapa";
-import SelectDate from "@/components/SelectGroup/SelectDate";
+import SelectRuta from "@/components/SelectGroup/SelectRuta";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DataTable from 'react-data-table-component';
 
-
-
 interface CarteleraProps {
-    params: { linea: any, taru: any };
+    params: { linea: any, pd: any };
 }
 
-const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
+const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
     const param = params
-    const [fecha, setFecha] = useState<any>();
-    const [fechas, setFechas] = useState<any>([]);
+
     const [nombre, setNombre] = useState("");
-    const [descripcion, setDescripcion] = useState("");
     const [data, setData] = useState<any>([]);
-    const [localidad, setLocalidad] = useState<number>();
+    const [ruta, setRuta] = useState<any>();
     const [sector, setSector] = useState("San Cristóbal");
-    const [mapa, setMapa] = useState<any>();
-    const [mapData, setMapData] = useState<any>([]);
-    const [dataTable, setDataTable] = useState<DataRow[]>([]);
-    const [filteredDataTable, setFilteredDataTable] = useState<DataRow[]>([]);
-    const [filteredTodayDataTable, setFilteredTodayDataTable] = useState<DataRow[]>([]);
-    const [horarios, setHorarios] = useState<any>([]);
-    const [PperPage, setPperPage] = useState<number>();
-
+    const [polilyne, setPolilyne] = useState<any>([]);
     const router = useRouter();
-    const handleLocalidadChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if (e.target.value === "0") {
-            setLocalidad(0);
-            console.log(e.target.value);
-        } else if (e.target.value === "1") {
-            setLocalidad(1);
-            console.log(e.target.value);
-        } else if (e.target.value === "2") {
-            setLocalidad(2);
-            console.log(e.target.value);
-        }
+    const handleRutaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setRuta(e.target.value)
+        console.log(ruta)
     };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/rutas/${params.taru}`);
+                const response = await axios.get(`/api/mapas/${params.pd}`);
                 setData(response.data);
                 setNombre(response.data.nombre);
-                setDescripcion(response.data.descripcion);
-                if (response.data.localidad === 1) {
+                setRuta(response.data.ruta);
+                if (response.data.ruta === 1) {
                     setSector('San Cristóbal - Cárdenas');
-                } else if (response.data.localidad === 2) {
+                } else if (response.data.ruta === 2) {
                     setSector('San Cristóbal - Torbes');
-                } else if (response.data.localidad === 3) {
+                } else if (response.data.ruta === 3) {
                     setSector('San Cristóbal - Guásimos');
-                } else if (response.data.localidad === 4) {
+                } else if (response.data.ruta === 4) {
                     setSector('San Cristóbal - Andrés Bello');
                 }
-
-
             } catch (error) {
-                router.push(`/dashboard/${params.linea}/rutas`);
+                router.push(`/dashboard/${params.linea}/pdr`);
             }
-            const response2 = await axios.get(`/api/mapa/${params.taru}`);
-            const filteredMap = response2.data.filter((item: any) => item._id == mapa);
-            console.log(filteredMap)
-            setMapData(filteredMap);
-
-            if (mapa) {
-                const response3 = await axios.get(`/api/horarios/${mapa}`);
-                console.log(response3)
-                setHorarios(response3.data);
-            }
-
-
         };
         fetchData();
-    }, [params.taru, mapa]);
+
+    }, [params, params.linea, params.pd, router]);
     useEffect(() => {
-        if (data._id && params.taru != data._id) {
-            router.push(`/dashboard/${params.linea}/rutas`);
+        if (data._id && params.pd != data._id) {
+            router.push(`/dashboard/${params.linea}/pdr`);
         }
-    }, [data, params.taru, params.linea, router]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNombre(e.target.value);
-        console.log(e.target.value);
-    }
-
-
+    }, [data, params.pd, params.linea, router]);
     const handleDelete = async (id: string) => {
         const confirmDelete = window.confirm(
-            "¿Estás seguro que deseas ELIMINAR esta ruta?"
+            "¿Estás seguro que deseas ELIMINAR esta parte?"
         );
         if (confirmDelete) {
             try {
-                const response = await fetch(`/api/rutas/${id}`, {
+                const response = await fetch(`/api/mapas/${id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
 
-                    toast.success("Ruta eliminada correctamente.");
-                    router.push(`/dashboard/${params.linea}`);
+                    toast.success("Parte eliminada correctamente.");
+                    router.push(`/dashboard/${params.linea}/pdr`);
                 } else {
-                    toast.error("Error al eliminar la Ruta.");
+                    toast.error("Error al eliminar la parte.");
                 }
             } catch (error) {
                 console.log(error);
-                toast.error("Error al eliminar la Ruta.");
+                toast.error("Error al eliminar la parte.");
             }
         }
-    };
-    const handleMapaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setMapa(e.target.value)
-        console.log(mapa)
-    };
-    const handleFechaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFecha(e.target.value)
-        setFilteredDataTable(dataTable.filter((item: DataRow) => item.fecha === e.target.value));
-        console.log(filteredDataTable)
-        console.log(fecha)
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
 
-            const uploadData = await axios.put(`/api/rutas/${params.taru}`, {
+            const uploadData = await axios.put(`/api/pdr/${params.pd}`, {
                 nombre: nombre,
-                descripcion: descripcion,
-                localidad: localidad,
+                ruta: ruta,
                 linea: params.linea,
             })
             window.location.reload();
-            toast.success("Ruta Actualizada con éxito!");
+            toast.success("Parte Actualizada con éxito!");
         } catch (error) {
             console.log(error);
-            toast.error("Error al subir la Ruta.");
+            toast.error("Error al subir la Parte.");
         }
 
     };
@@ -156,17 +104,13 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         hour: '2-digit',
         minute: '2-digit',
     });
-    //    const truncatedText = data.texto.length > 100 ? data.texto.substring(0, 100) + '...' : data.texto;
-    //falta mapear 
+
 
     interface DataRow {
-        fecha: any;
         pdr_name: any;
         hora: any;
-        pdr_id: any;
-        unidad: any
-
     }
+
     const columns = [
         {
             name: 'Punto de Referencia',
@@ -176,60 +120,11 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             name: 'Hora ',
             selector: (row: DataRow) => row.hora,
         },
-        {
-            name: 'Fecha',
-            selector: (row: DataRow) => row.fecha,
-        },
-        {
-            name: 'Unidad Asignada',
-            selector: (row: DataRow) => row.unidad ? row.unidad : 'no tiene unidad asignada',
-        }
     ];
+    const dataTable: DataRow[] = Array.isArray(data.recorridos)
+        ? data.recorridos.flatMap((recorrido: any) => Array.isArray(recorrido.defaultHora) ? recorrido.defaultHora : [])
+        : [];
 
-
-    useEffect(() => {
-
-
-        const test1 = horarios.flatMap((horario: any) => horario.hor4weeks)
-        const horariosMaped: any = test1.flatMap((hor4week: any) => hor4week.defaultHora)
-        const fechaTest = horarios.map((horario: any) => horario.fecha)
-        // Convertir fechas de string dd/mm/yyyy a Date
-        const fechasConvertidas = fechaTest.map((fecha: string) => {
-            const [day, month, year] = fecha.split('/');
-            return new Date(Number(year), Number(month) - 1, Number(day));
-        });
-
-        // Ordenar fechas de forma ascendiente
-        fechasConvertidas.sort((a: Date, b: Date) => a.getTime() - b.getTime());
-
-        // Convertir fechas de vuelta a string dd/mm/yyyy para renderizar
-        const fechasOrdenadas = fechasConvertidas.map((fecha: Date) => {
-            const day = fecha.getDate().toString().padStart(2, '0');
-            const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
-            const year = fecha.getFullYear();
-            return `${day}/${month}/${year}`;
-        });
-        setFechas(fechasOrdenadas);
-        const updatedDataTable: DataRow[] = horariosMaped ? horariosMaped : [];
-        setDataTable(updatedDataTable);
-        console.log(updatedDataTable);
-        const filtrarPorFechaActual = (horarios: any[]) => {
-            const hoy = new Date();
-            const fechaActual = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-
-            return horarios.filter((item: any) => {
-                const [day, month, year] = item.fecha.split('/');
-                const itemDate = new Date(Number(year), Number(month) - 1, Number(day));
-                return itemDate.getTime() === fechaActual.getTime();
-            });
-        };
-
-        // Uso de la función para obtener los elementos con la fecha actual
-        const elementosFechaActual = filtrarPorFechaActual(horariosMaped);
-        setFilteredTodayDataTable(elementosFechaActual);
-
-    }, [horarios]);
-    //paginationperpage = hor4weeks.length * deafultHora.length
     return (
         <>
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -243,40 +138,56 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                     rate={formattedDate}
                     levelUp={data.levelUp}
                 >
-                    <button
-                        onClick={() => handleDelete(data._id)}
-                        className="inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    >
-                        Eliminar
-                    </button>
+                    <div className=" mt-5">
+                        <button
+                            onClick={() => handleDelete(data._id)}
+                            className="my-5 w-30 inline-flex items-center justify-center rounded-full bg-red px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                        >
+                            Eliminar
+                        </button>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/recorrido`}>
+                            <button
+                                className=" my-2 ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Actualizar Recorrido
+                            </button>
+                        </Link>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/pdr`}>
+                            <button
+                                className="m-2  ml-4 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Actualizar PDR
+                            </button>
+                        </Link>
+                        <Link href={`/dashboard/${params.linea}/pdr/${params.pd}/horario`}>
+                            <button
+                                className="m-2 inline-flex items-center justify-center rounded bg-blue-800 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                            >
+                                Horario por Defecto
+                            </button>
+                        </Link>
+                    </div>
                 </CardData>
-
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <SelectMapa onChange={handleMapaChange} params={param}></SelectMapa>
                 <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
-                    <PrincipalMap2 todayData={filteredTodayDataTable} id={mapa} params={param} />
+                    <PrincipalMap params={param} />
                 </GoogleMapApiLoader>
             </div>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className='grid grid-cols-1 md:grid-cols-2'>
-                    <h3 className="font-medium text-black dark:text-white">
-                        Horario por Defecto
-                    </h3>
-                    <div hidden={!dataTable.length}>
-                        <SelectDate fechas={fechas} onChange={handleFechaChange}></SelectDate>
-                    </div>
-                </div>
+                <h3 className="font-medium text-black dark:text-white">
+                    Horario por Defecto
+                </h3>
                 {dataTable.length > 0 ? (
                     <DataTable
-                        paginationPerPage={PperPage ? PperPage : 8}
-                        paginationRowsPerPageOptions={PperPage ? [PperPage] : [8]}
+                        paginationPerPage={data.pdr ? data.pdr.length : 1}
+                        paginationRowsPerPageOptions={data.pdr ? [data.pdr.length] : [1]}
                         striped
-                        noDataComponent={"Selecciona una fecha"}
+                        noDataComponent={"Loading..."}
                         responsive
                         pagination
                         columns={columns}
-                        data={filteredDataTable}
+                        data={dataTable}
                     />
                 ) : (
                     <p>No data available</p>
@@ -285,43 +196,35 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             <div className="  sm:w-1/2  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Editar Ruta
+                        Editar Recorrido
                     </h3>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
                     <div>
                         <form onSubmit={handleSubmit}>
                             <div className="pb-10">
-                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Editar Nombre
-                                </label>
-                                <input
-
-                                    value={nombre}
-                                    onChange={handleChange}
-                                    type="text"
-                                    placeholder="Editar Título"
-                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                />
+                                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                                    <div className="w-full ">
+                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                            Nombre
+                                        </label>
+                                        <input
+                                            value={nombre}
+                                            type="text"
+                                            required
+                                            onChange={(e) => setNombre(e.target.value)}
+                                            placeholder="Ingresa el nombre de la nueva parte del recorrido"
+                                            className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        />
+                                    </div>
+                                </div>
+                                <SelectRuta params={param} onChange={handleRutaChange} />
                             </div>
-
-                            <SelectLocalidad onChange={handleLocalidadChange} />
-                            <label className=" pt-5 mb-3 block text-sm font-medium text-black dark:text-white">
-                                Editar Descripcion
-                            </label>
-
-                            <textarea
-                                rows={6}
-                                value={descripcion}
-                                onChange={(e) => setDescripcion(e.target.value)}
-                                placeholder="Editar Texto"
-                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                            ></textarea>
                             <button
                                 type="submit"
                                 className="inline-flex items-center justify-center rounded-full bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                             >
-                                Actualizar Ruta
+                                Actualizar parte de la ruta
                             </button>
                         </form>
                     </div>
@@ -331,4 +234,4 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     );
 };
 
-export default Rutasview;
+export default Pdrview;

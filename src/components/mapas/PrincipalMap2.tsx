@@ -62,7 +62,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id, todayData }) 
             }
         }
         fetchdata();
-    }, [id]);
+    }, [id , params.taru]);
 
     const [isOpen, setOpen] = useState<number | null>(null);
     const handleOpen = ( i: number) => {
@@ -129,7 +129,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id, todayData }) 
                 }}
             >
                 {markersConHoras.map(({ lat, lng, nombre, _id, horaCercana }, i) => (
-                    <InfoWindow content={<div id='content'>
+                    <InfoWindow key={i} content={<div id='content'>
                         <div id='siteNotice'></div>
                         <h1 id='firstHeading' className='firstHeading font-medium text-black'>{nombre}</h1>
                         <div id='bodyContent'>

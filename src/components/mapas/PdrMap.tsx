@@ -24,7 +24,7 @@ const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
             onChangePdr(response.data.pdr)
         }
         fetchdata();
-    }, [param.pd]);
+    }, [param.pd, onChangePdr]);
 
 
     const handleMarkerClick = () => {
@@ -86,7 +86,7 @@ const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
             }}
         >
             {markers.map(({ lat, lng }: { lat: number, lng: number }, i: any) => (
-                <InfoWindow content={<Content />} >
+                <InfoWindow key={i} content={<Content />} >
                     <AdvancedMarker key={i} lat={lat} lng={lng} onClick={handleMarkerClick2} />
                 </InfoWindow>
             ))}

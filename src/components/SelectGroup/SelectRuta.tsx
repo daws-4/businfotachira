@@ -21,7 +21,7 @@ const SelectLocalidad: React.FC<SelectLocalidadProps> = ({ onChange, params }) =
             console.log(response.data);
         };
         fetchData();
-    }, []);
+    }, [ params.linea]);
 
     const changeTextColor = () => {
         setIsOptionSelected(true);

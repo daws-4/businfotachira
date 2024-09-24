@@ -41,7 +41,7 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
             }
         };
         fetchData();
-    }, [params.pd]);
+    }, [params.pd, params.linea, router]);
 
     const handlePdrChange = (data: any[]) => {
         const updatedPdr = data.map((item: any, index: number) => ({

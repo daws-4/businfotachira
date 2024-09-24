@@ -7,16 +7,16 @@
   "email": "lineaintercomunal@gmail.com",
   "password": "$2a$10$k20Htn8g6kiGE7DKmue8luSYEHrGri/.4i6mcBk4zM2ftyCjTS9sy",
   "telefono": [
-    "04120691296",
-    "02763477650"
+    4120691296,
+    2763477650
   ],
-  "direccion": "Av. Universidad al lado del estadio polideportivo",
+  "direccion": "Av. Universidad al lado del estadio polideportivo al frente del estacionamiento",
   "rol": 0,
   "createdAt": {
     "$date": "2024-09-02T20:36:20.985Z"
   },
   "updatedAt": {
-    "$date": "2024-09-02T20:36:20.985Z"
+    "$date": "2024-09-11T15:07:18.039Z"
   },
   "__v": 0
 }]

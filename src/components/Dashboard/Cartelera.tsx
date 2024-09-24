@@ -1,11 +1,5 @@
 "use client";
-import dynamic from "next/dynamic";
 import React from "react";
-import Link from "next/link";
-import ChartOne from "../Charts/ChartOne";
-import ChartTwo from "../Charts/ChartTwo";
-import ChatCard from "../Chat/ChatCard";
-import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -26,7 +20,7 @@ const Cartelera: React.FC<CarteleraProps> = ({ params }) => {
       setData(response.data.filter((item: any) => item.linea === params.linea));
     };
     fetchData();
-  }, []);
+  }, [params.linea]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

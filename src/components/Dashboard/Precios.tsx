@@ -19,7 +19,7 @@ const Precios: React.FC<CarteleraProps> = ({ params }) => {
             setData(response.data.filter((item: any) => item.linea === params.linea));
         };
         fetchData();
-    }, []);
+    }, [params.linea]);
     const handleShowAll = (distancia: string) => {
         setShowAll(prevState => ({
             ...prevState,
