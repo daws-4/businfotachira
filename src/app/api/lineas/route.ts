@@ -15,9 +15,10 @@ export async function POST(request: any) {
   const token: any = cookieStore.get(jwtName as any);
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { username, contraseña, rol, email, telefono, direccion, nombre } = await request.json();
+
+    const { username, contraseña, email, telefono, direccion, nombre, localidad, rol } = await request.json();
     const password = await bcrypt.hash(contraseña, 10);
-    const newAdmin = new lineas({ username, password, rol, email, telefono, direccion, nombre });
+    const newAdmin = new lineas({ username, password, rol, email, telefono, direccion, nombre, localidad });
     const savedAdmin = await newAdmin.save();
     console.log(savedAdmin);
     return NextResponse.json(savedAdmin);

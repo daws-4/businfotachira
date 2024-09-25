@@ -12,7 +12,7 @@ export function GET() {
 
   if (token && token.value) {
     try {
-      const { nombre, username, email, rol, telefono, direccion, timestamps } =
+      const { nombre, username, email, rol, telefono, direccion, timestamps, localidad } =
         jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
 
       return NextResponse.json({
@@ -22,7 +22,8 @@ export function GET() {
         username,
         telefono,
         direccion,
-        timestamps
+        timestamps,
+        localidad
       });
     } catch (error) {
       return NextResponse.json(

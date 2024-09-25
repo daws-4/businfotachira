@@ -39,6 +39,12 @@ const lineas = new Schema(
       default: 0,
       trim: true,
     },
+    localidad: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  
   },
   {
     timestamps: true,

@@ -30,7 +30,11 @@ const defaultHora = new Schema(
       required: true,
       trim: true,
     },
-
+    horario_id:{
+      type: String,
+      required: true,
+      trim: true,
+    }
   }
 );
 

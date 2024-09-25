@@ -40,6 +40,7 @@ export async function POST(request: any) {
         username: result.username,
         telefono: result.telefono,
         direccion: result.direccion,
+        localidad: result.localidad,
 
       },
       jwtSecret

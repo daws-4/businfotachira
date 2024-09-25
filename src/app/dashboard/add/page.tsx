@@ -1,4 +1,4 @@
-import Admin from "@/components/Dashboard/Admin";
+import AddLinea from "@/components/Dashboard/AddLinea";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { ToastContainer } from "react-toastify";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-        <Admin />
+        <AddLinea />
         <ToastContainer />
     </>
   );

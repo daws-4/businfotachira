@@ -4,18 +4,22 @@ import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import axios from "axios";
+import { set } from "mongoose";
 
 const DropdownUser = ({ params }: { params: { linea: any } }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState<any>({});
   const [token, setToken] = useState<any>({});
+  const [localidad, setLocalidad] = useState('San Cristóbal');
   console.log(params)
   useEffect(() => {
       const getNow = async () => {
         const cookie = await axios.get("/api/auth/cookie");
         setToken(cookie.data);
+        console.log(cookie.data)
         const data = await axios.get(`/api/lineas/${params.linea}`);
         setUser(data);
+        console.log(data)
       };
       getNow();
     }, [params.linea]);
@@ -28,31 +32,32 @@ const DropdownUser = ({ params }: { params: { linea: any } }) => {
     console.error(error.message);
   }
   };
+  useEffect(() => {
+    if (token) {
+      console.log(token.localidad)
+      if (token.localidad == 1) {
+        setLocalidad('Cárdenas')
+      }else if (token.localidad == 2) {
+        setLocalidad('Torbes')
+    }else if (token.localidad == 3) {
+        setLocalidad('Guásimos')
+    } else if (token.localidad == 4) {
+        setLocalidad('Andrés Bello')
+    }
+  } 
+  }, [token])
+  
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-      <Link
+      <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
-        href="#"
       >
-        <span className="hidden text-right lg:block">
+        <span className="text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
             {token.rol != 5 ? user.data?.nombre: "Admin"}
           </span>
-          <span className="block text-xs">{token.rol == 5? 'administrador': 'Línea de San Cristóbal'}</span>
-        </span>
-
-        <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
+          <span className="block text-xs">{token.rol == 5? 'administrador': `Línea de ${localidad}`}</span>
         </span>
 
         <svg
@@ -70,7 +75,7 @@ const DropdownUser = ({ params }: { params: { linea: any } }) => {
             fill=""
           />
         </svg>
-      </Link>
+      </button>
 
       {/* <!-- Dropdown Start --> */}
       {dropdownOpen && (

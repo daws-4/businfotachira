@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import CardData from "../CardData";
+import CardData from "@/components/CardData";
 import PrincipalMap from "@/components/mapas/PrincipalMap";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
@@ -65,7 +65,9 @@ const Pdrview: React.FC<CarteleraProps> = ({ params }) => {
                 const response = await fetch(`/api/mapas/${id}`, {
                     method: 'DELETE',
                 });
-                if (response.ok) {
+                const response0 = await axios.delete(`/api/horarios/${id}`);
+               
+                if (response.ok && response0.status === 200) {
 
                     toast.success("Parte eliminada correctamente.");
                     router.push(`/dashboard/${params.linea}/pdr`);

@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DataTable from 'react-data-table-component';
+import Link from "next/link";
 
 
 
@@ -20,8 +21,10 @@ interface CarteleraProps {
 
 const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const param = params
+    const [fechaUrl, setFechaUrl] = useState<string | null>(null);
     const [fecha, setFecha] = useState<string | null>(null);
     const [fechas, setFechas] = useState<any>([]);
+    const [deleteHor, setDeleteHor] = useState<any>();
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [data, setData] = useState<any>([]);
@@ -52,6 +55,9 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+
+                const responseDel = await axios.get(`/api/mapa/${params.taru}`);
+                setDeleteHor(responseDel.data.flatMap((id: any) => id._id));
                 const response = await axios.get(`/api/rutas/${params.taru}`);
                 setData(response.data);
                 setNombre(response.data.nombre);
@@ -106,6 +112,19 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
                 const response = await fetch(`/api/rutas/${id}`, {
                     method: 'DELETE',
                 });
+                for (const horId of deleteHor) {
+                    const response = await fetch(`/api/mapas/${horId}`, {
+                        method: 'DELETE',
+                    });
+                    const response0 = await fetch(`/api/horarios/${horId}`, {
+                        method: 'DELETE',
+                    });
+                    if (response.ok && response0.ok) {
+                        toast.success(`Ruta con ID ${horId} eliminada correctamente.`);
+                    } else {
+                        toast.error(`Error al eliminar la Ruta con ID ${horId}.`);
+                    }
+                }
                 if (response.ok) {
 
                     toast.success("Ruta eliminada correctamente.");
@@ -122,6 +141,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const handleMapaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFecha(null)
         setMapa(e.target.value)
+        console.log(e.target.value)
         setFilteredDataTable([])
         
     }; 
@@ -166,7 +186,8 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         pdr_name: any;
         hora: any;
         pdr_id:any;
-        unidad:any
+        unidad:any;
+        _id:any
 
     }
     const columns = [
@@ -175,8 +196,12 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             selector: (row: DataRow) => row.pdr_name,
         },
         {
-            name: 'Hora ',
-            selector: (row: DataRow) => row.hora,
+            name: 'Hora',
+            selector: (row: DataRow) => (
+                <Link href={`/dashboard/${params.linea}/rutas/edit/${fechaUrl}`}>
+                    {row.hora}
+                </Link>
+            ),
         },
         {
             name: 'Fecha',
@@ -190,12 +215,13 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
 
 
     useEffect(() => {
-
-
-            const test1 = horarios.flatMap((horario: any) => horario.hor4weeks) 
+            const test2= horarios.filter((horario: any) => horario.fecha == fecha)
+            const test3 = test2.flatMap((horario: any) => horario._id)
+            setFechaUrl(test3[0])
+            console.log(test3)
+            const test1 = horarios.flatMap((horario: any) => horario.hor4weeks)             
             const horariosMaped:any = test1.flatMap((hor4week: any) => hor4week.defaultHora)
             const fechaTest = horarios.map((horario: any) => horario.fecha)
-            console.log(fechaTest)
         // Convertir fechas de string dd/mm/yyyy a Date
         const fechasConvertidas = fechaTest.map((fecha: string) => {
             const [day, month, year] = fecha.split('/');
@@ -232,7 +258,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         const elementosFechaActual = filtrarPorFechaActual(horariosMaped);
         setFilteredTodayDataTable(elementosFechaActual);
 
-    }, [horarios]);
+    }, [horarios, fecha]);
 //paginationperpage = hor4weeks.length * deafultHora.length
     return (
         <> 

@@ -12,7 +12,7 @@ app.prepare().then(() => {
   
   const port = process.env.PORT || 3000;
   // Configurar cron jobs
-  cron.schedule('0 22 * * *', async () => {   
+  cron.schedule('58 23 * * *', async () => {   
     const now = new Date();
     const formattedTime = now.toLocaleTimeString('en-US', { hour12: false });
     console.log(`Ejecutando tarea a las ${formattedTime}`);
