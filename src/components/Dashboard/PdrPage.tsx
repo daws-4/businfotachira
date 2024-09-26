@@ -17,7 +17,6 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
 
     const [data, setData] = useState<any>([]);
     const [ruta, setRuta] = useState<any>();
-    const [sector, setSector] = useState("San Cristóbal");
     const [pdr, setPdr] = useState<any>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const router = useRouter();
@@ -27,20 +26,15 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
             try {
                 const response = await axios.get(`/api/mapas/${params.pd}`);
                 setData(response.data);
-                if (response.data.ruta === 1) {
-                    setSector('San Cristóbal - Cárdenas');
-                } else if (response.data.ruta === 2) {
-                    setSector('San Cristóbal - Torbes');
-                } else if (response.data.ruta === 3) {
-                    setSector('San Cristóbal - Guásimos');
-                } else if (response.data.ruta === 4) {
-                    setSector('San Cristóbal - Andrés Bello');
-                }
+                
             } catch (error) {
                 router.push(`/dashboard/${params.linea}/pdr`);
             }
         };
-        fetchData();
+
+        if (params.pd && params.linea) {
+            fetchData();
+        }
     }, [params.pd, params.linea, router]);
 
     const handlePdrChange = (data: any[]) => {

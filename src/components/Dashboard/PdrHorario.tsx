@@ -25,6 +25,9 @@ const PdrHorario: React.FC<CarteleraProps> = ({ params, mapa}) => {
     const router = useRouter();
     useEffect(() => {
         const pageSize = pdr.length;
+        if (!pageSize) {
+            router.push(`/dashboard/${params.linea}/pdr/${params.pd}`);
+        }
         const totalPages = Math.ceil(crArray.length / pageSize);
         const paginatedArray = [];
         for (let i = 0; i < totalPages; i++) {

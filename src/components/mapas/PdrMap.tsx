@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect} from 'react';
 import { GoogleMap, Polyline, PinElement, Marker, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 interface PdrMapProps {
@@ -15,17 +15,26 @@ const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
     const [markers, setMarkers] = useState<any>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const param = params
+
+    const memoizedOnChangePdr = useCallback(onChangePdr, []);
+
+
     useEffect(() => {
-        const fetchdata = async () => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`/api/mapas/${param.pd}`);
+                setPolilyne(response.data.polilyne);
+                setMarkers(response.data.pdr);
+                memoizedOnChangePdr(response.data.pdr);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-            const response = await axios.get(`/api/mapas/${param.pd}`);
-            setPolilyne(response.data.polilyne)
-            setMarkers(response.data.pdr)
-            onChangePdr(response.data.pdr)
+        if (param.pd) {
+            fetchData();
         }
-        fetchdata();
-    }, [param.pd, onChangePdr]);
-
+    }, [param.pd, memoizedOnChangePdr]);
 
     const handleMarkerClick = () => {
         window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");

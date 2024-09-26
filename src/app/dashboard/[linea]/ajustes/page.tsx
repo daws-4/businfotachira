@@ -1,4 +1,4 @@
-import Ajustes from "@/components/Dashboard/Ajustes";
+import Ajustes from "@/components/Dashboard/ajustes";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { ToastContainer } from "react-toastify";
