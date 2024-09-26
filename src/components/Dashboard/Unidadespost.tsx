@@ -56,7 +56,7 @@ const Unidadespost: React.FC<CarteleraProps> = ({ params }) => {
     return (
         <>
             <div className="flex justify-center items-center">
-                <div className=" w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className=" w-2/3 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className=" justify-center border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                         <h3 className="font-medium text-black dark:text-white">
                             Ingresar nueva Ruta
