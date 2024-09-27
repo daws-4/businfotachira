@@ -31,6 +31,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const [localidad, setLocalidad] = useState<number>();
     const [sector, setSector] = useState("San Cristóbal");
     const [mapa, setMapa] = useState<any>();
+    const [unidades, setUnidades] = useState<any>([]);
     const [mapData, setMapData] = useState<any>([]);
     const [dataTable, setDataTable] = useState<DataRow[]>([]);
     const [filteredDataTable, setFilteredDataTable] = useState<DataRow[]>([]);
@@ -56,6 +57,9 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         const fetchData = async () => {
             try {
 
+                const response0 = await axios.get(`/api/unidades`);
+                setUnidades(response0.data.filter((item: any) => item.linea === params.linea));
+                console.log(response0.data);
                 const responseDel = await axios.get(`/api/mapa/${params.taru}`);
                 setDeleteHor(responseDel.data.flatMap((id: any) => id._id));
                 const response = await axios.get(`/api/rutas/${params.taru}`);
@@ -209,7 +213,10 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         },
         {
             name: 'Unidad Asignada',
-            selector: (row: DataRow) => row.unidad ? row.unidad : 'no tiene unidad asignada',
+            selector: (row: DataRow) => {
+                const unidad = unidades.find((item:any) => item._id === row.unidad);
+                return unidad ? `${unidad.nombre_conductor} | Unidad N:${unidad.numero}` : 'no tiene unidad asignada';
+            },
         }
     ];
 

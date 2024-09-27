@@ -44,11 +44,11 @@ export async function PUT(
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const { linea, ruta, recorrido, hor4weeks, fecha} = await request.json();
     const updateAdmin = await horarios.findOneAndUpdate(
-      { id: params.hor },
-      { linea, ruta, recorrido, hor4weeks, fecha },
+      { _id: params.hor },
+      {linea, ruta, recorrido, hor4weeks, fecha},
       { new: true }
     );
-    console.log(updateAdmin);
+    console.log('se han actualizado: ',updateAdmin);
   } catch (error) {
     return NextResponse.json((error as Error).message, { status: 400 });
   }

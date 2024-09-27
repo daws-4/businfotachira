@@ -50,7 +50,7 @@ const PrincipalMapp: React.FC<PrincipalMappProps> = ({ params, recorrido }) => {
                     height: "400px",
                 }}
             >
-                {markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
+                {markers && markers.map(({ lat, lng, nombre }: { lat: number, lng: number, nombre:string }, i: any) => (
                     <InfoWindow key={i} content={<div id='content'>
                         <div id='siteNotice'></div>
                         <h1 id='firstHeading' className='firstHeading font-medium text-black'>{nombre}</h1>
