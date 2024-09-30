@@ -1,0 +1,11 @@
+import {Navigation} from "./navigation";
+import { About } from "./about";
+import { Contact } from "./contact";
+import { Header } from "./header";
+import { Team } from "./Team";
+import { Services } from "./services";
+import { Testimonials } from "./testimonials";
+import { Features } from "./features";
+import {Image} from "./image";
+import {Gallery} from "./gallery";
+export {Navigation, About, Contact, Header, Team, Services, Testimonials, Features, Image, Gallery};

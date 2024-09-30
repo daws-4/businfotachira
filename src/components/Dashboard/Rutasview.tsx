@@ -192,9 +192,16 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
         pdr_id:any;
         unidad:any;
         _id:any
+        array_id:any
 
     }
     const columns = [
+        {
+            name:'Recorrido',
+            selector: (row: DataRow) => {
+                return row.array_id+1
+            },
+        },
         {
             name: 'Punto de Referencia',
             selector: (row: DataRow) => row.pdr_name,
