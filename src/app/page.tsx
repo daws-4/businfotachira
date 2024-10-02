@@ -1,39 +1,26 @@
-'use client'
-import React, { useState, useEffect } from "react";
+import { Metadata } from "next";
+import { connectDB } from "@/libs/db";
+import lineas from "@/models/lineas";
 import { Navigation, About, Contact, Header, Team, Services, Testimonials, Features, Gallery } from "@/components/landing/index";
-import JsonData from "@/components/data/data.json";
 import "./App.css";
-import SmoothScroll from "smooth-scroll";
-import HeaderLand from "@/components/landing/headerland";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+export const metadata: Metadata = {
+  title:
+    "BusInfoTáchira - App de transporte público para el estado Táchira, Venezuela",
+  description: "Visualización de rutas de transporte público en el estado Táchira, Venezuela",
+};
+async function fetchData() {
+  await connectDB(); // Asegurarse de que la conexión a la base de datos se haya establecido correctamente
+  const allLines = await lineas.find({}, { nombre: 1, username: 1, _id: 0 }); // Buscar todas las líneas y devolver los campos 'nombre' y 'username'
+  return allLines.map(linea => ({ nombre: linea.nombre, username: linea.username })); // Convertir los datos a un formato JSON simple
+}
 
-const Home = () => {
-  interface LandingPageData {
-    Header: any;
-    Features: any;
-    About: any;
-    Services: any;
-    Gallery: any;
-    Testimonials: any;
-    Team: any;
-    Contact: any;
-  }
-  
-  const [landingPageData, setLandingPageData] = useState<LandingPageData>({
-    Header: {},
-    Features: [],
-    About: {},
-    Services: [],
-    Gallery: [],
-    Testimonials: [],
-    Team: [],
-    Contact: {},
-  });
-  useEffect(() => {
-    setLandingPageData(JsonData);
-  }, []);
+export default async function Home() {
 
-
+  const linea = await fetchData(); 
+  console.log(linea)
 
   return (
     <> <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
@@ -75,20 +62,18 @@ const Home = () => {
         rel="stylesheet"
       />
       <div>
-        <Navigation/>
-        <Header data={landingPageData.Header} />
-        <Features data={landingPageData.Features} />
-        <About data={landingPageData.About} />
-        <Gallery data={landingPageData.Gallery} />
-        <Contact data={landingPageData.Contact} />
+        <Navigation linea={linea}/>
+        <Header />
+        <Features />
+        <About />
+        <Gallery />
+        <Contact  />
       </div>
 
-
-      <script type="text/javascript" src="js/jquery.1.11.1.js"></script>
+      <ToastContainer />
+      <script type="text/javascript" src="js/jquery.1.11.1.js"></script   >
       <script type="text/javascript" src="js/bootstrap.js"></script>
       </>
     
   );
 };
-
-export default Home;

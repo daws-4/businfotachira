@@ -1,7 +1,36 @@
-import { Image } from "./image.tsx";
+'use client'
+import { useState, useEffect } from "react";
+import JsonData from "@/components/data/data.json";
+import { Image } from "./image";
 import React from "react";
 
-export const Gallery = (props:any) => {
+
+
+export const Gallery = () => {
+  interface LandingPageData {
+    Header: any;
+    Features: any;
+    About: any;
+    Services: any;
+    Gallery: any;
+    Testimonials: any;
+    Team: any;
+    Contact: any;
+  }
+
+  const [landingPageData, setLandingPageData] = useState<LandingPageData>({
+    Header: {},
+    Features: [],
+    About: {},
+    Services: [],
+    Gallery: [],
+    Testimonials: [],
+    Team: [],
+    Contact: {},
+  });
+  useEffect(() => {
+    setLandingPageData(JsonData);
+  }, []);
   return (
     <div id="portfolio" className="text-center">
       <div className="container">
@@ -13,8 +42,8 @@ export const Gallery = (props:any) => {
         </div>
         <div className="row">
           <div className="portfolio-items">
-            {props.data
-              ? props.data.map((d:any, i:any) => (
+            {landingPageData.Gallery
+              ? landingPageData.Gallery.map((d:any, i:any) => (
                   <div
                     key={`${d.title}-${i}`}
                     className="col-sm-6 col-md-4 col-lg-4"

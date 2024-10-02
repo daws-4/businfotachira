@@ -2,19 +2,26 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { set } from "mongoose";
 
-export const Navigation = (props: any) => {
+export const Navigation = (linea : any) => {
   const [open, setOpen] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
-
+  const [accordionOpen2, setAccordionOpen2] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [data, setData] = useState([]);
   const accordionRef = useRef<HTMLLIElement>(null);
 
+  console.log(data)
   useEffect(() => {
+    setData(linea.linea)
     const handleResize = () => {
       if (window.innerWidth > 450) {
         setOpen(true);
+        setHidden(false);
       } else {
         setOpen(false);
+        setHidden(true);
       }
     };
 
@@ -51,7 +58,7 @@ export const Navigation = (props: any) => {
 
 
   const toggleAccordion = () => {
-    setAccordionOpen(!accordionOpen);
+    setAccordionOpen2(!accordionOpen2);
   };
 
   return (
@@ -80,39 +87,60 @@ export const Navigation = (props: any) => {
             <span className="icon-bar block w-6 h-0.5 bg-white"></span>
           </button>
         </div>
-        <div className={`${open ? 'block' : 'hidden'} lg:flex flex-col  flex-col lg:flex-row `}>
-            <ul className="flex flex-col lg:flex-row items-center justify-center lg:space-x-4">
-              <li>
-                <Link href="#features" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
-                  Características
-                </Link>
-              </li>
+        <div className={`${open ? 'block' : 'hidden'} md:flex flex-col  flex-col md:flex-row `}>
+            <ul className="flex flex-col md:flex-row items-center justify-center md:space-x-4">
+
             <li>
               <Link href="#" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
                 Nuestra App
               </Link>
             </li>
               <li>
+                <Link href="#features" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
+                  Características
+                </Link>
+              </li>
+              <li>
                 <Link href="#about" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
                   Nuestro Propósito
                 </Link>
               </li >
-            <li className="relative" ref={accordionRef}>
-              <button onClick={toggleAccordion} className="mx-4 block py-2 lg:py-0 text-white text-3xl">
+            <li hidden={!hidden} className="relative"
+              onClick={toggleAccordion}>
+              <a className=" mx-4 block py-2 lg:py-0 text-white text-3xl">
                 Nuestras Líneas
-              </button>
-              {accordionOpen && (
+              </a>
+              {accordionOpen2 ? (
                 <ul className="absolute left-0 top-full mt-2 w-full bg-slate-800 shadow-lg z-50">
-                  <li>
-                    <Link href="#info1" className="block py-2 px-4 text-white text-2xl hover:bg-slate-700">
-                      Información 1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#info2" className="block py-2 px-4 text-white text-2xl hover:bg-slate-700">
-                      Información 2
-                    </Link>
-                  </li>
+                  {data.map((linea: any) => {
+                    return (
+                      <li key={linea.username}>
+                        <Link href="#info1" className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
+                          {linea.nombre}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ): ''}
+            </li>
+            <li hidden={hidden} className="relative" ref={accordionRef}
+              onMouseEnter={() => setAccordionOpen(true)}
+              onMouseLeave={() => setAccordionOpen(false)}>
+              <Link href='#portfolio' className=" mx-4 block pt-2 lg:py-0 text-white text-3xl">
+                Nuestras Líneas
+              </Link>
+              {accordionOpen && (
+                <ul className="absolute left-0 top-full w-full bg-slate-800 shadow-lg z-50">
+                  {data.map((linea: any) => {
+                    return (
+                      <li key={linea.username}>
+                        <Link href={`${linea.username}`} className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
+                          {linea.nombre}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </li>

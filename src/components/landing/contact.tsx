@@ -1,15 +1,43 @@
 'use client'
+import { useState, useEffect } from "react";
+import JsonData from "@/components/data/data.json";
 import Link from "next/link";
-import { useState } from "react";
 import React from "react";
+import axios from 'axios'
+import { toast } from "react-toastify";
 
 const initialState = {
   name: "",
   email: "",
   message: "",
 };
-export const Contact = (props:any) => {
-  const [{ name, email, message }, setState] = useState(initialState);
+export const Contact = () => {
+  interface LandingPageData {
+    Header: any;
+    Features: any;
+    About: any;
+    Services: any;
+    Gallery: any;
+    Testimonials: any;
+    Team: any;
+    Contact: any;
+  }
+
+  const [landingPageData, setLandingPageData] = useState<LandingPageData>({
+    Header: {},
+    Features: [],
+    About: {},
+    Services: [],
+    Gallery: [],
+    Testimonials: [],
+    Team: [],
+    Contact: {},
+  });
+  useEffect(() => {
+    setLandingPageData(JsonData);
+  }, []);
+
+  const [{ name, email, message }, setState] = useState<{ name: string; email: string; message: string; }>(initialState);
 
   const handleChange = (e:any) => {
     const { name, value } = e.target;
@@ -18,10 +46,20 @@ export const Contact = (props:any) => {
   const clearState = () => setState({ ...initialState });
   
   
-  const handleSubmit = (e:any) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     console.log(name, email, message);
-    //PENDIENTE
+    try {
+     const response = await axios.post('/api/client/adminmails', { alias:name, email, mensaje:message })
+    if(response.status === 200){
+      toast.success('Mensaje enviado con éxito')
+     }else{
+      toast.error('Error al enviar el mensaje')
+     }
+    } catch (error) {
+      console.log(error)
+      toast.error('Error al enviar el mensaje')
+    }
 
     clearState();
    
@@ -43,6 +81,7 @@ export const Contact = (props:any) => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <input
+                        value={name}
                         type="text"
                         id="name"
                         name="name"
@@ -57,6 +96,7 @@ export const Contact = (props:any) => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <input
+                        value={email}
                         type="email"
                         id="email"
                         name="email"
@@ -71,6 +111,7 @@ export const Contact = (props:any) => {
                 </div>
                 <div className="form-group">
                   <textarea
+                    value={message}
                     name="message"
                     id="message"
                     className="form-control"
@@ -95,7 +136,7 @@ export const Contact = (props:any) => {
                 <span>
                   <i className="fa fa-map-marker"></i> Dirección
                 </span>
-                {props.data ? props.data.address : "loading"}
+                {landingPageData.Contact ? landingPageData.Contact.address : "loading"}
               </p>
             </div> */}
             <div className="contact-item">
@@ -103,7 +144,7 @@ export const Contact = (props:any) => {
                 <span>
                   <i className="fa fa-phone"></i> Teléfono
                 </span>{" "}
-                {props.data ? props.data.phone : "loading"}
+                {landingPageData.Contact ? landingPageData.Contact.phone : "loading"}
               </p>
             </div>
             <div className="contact-item">
@@ -111,7 +152,7 @@ export const Contact = (props:any) => {
                 <span>
                   <i className="fa fa-envelope-o"></i> Email
                 </span>{" "}
-                {props.data ? props.data.email : "loading"}
+                {landingPageData.Contact ? landingPageData.Contact.email : "loading"}
               </p>
             </div>
           </div>
@@ -120,17 +161,17 @@ export const Contact = (props:any) => {
               <div className="social">
                 <ul>
                   <li>
-                    <Link href={props.data && props.data.whatsapp ? `/${props.data.whatsapp}` : "/"}>
+                    <Link href={landingPageData.Contact && landingPageData.Contact.whatsapp ? `/${landingPageData.Contact.whatsapp}` : "/"}>
                       <i className="fa fa-whatsapp"></i>
                     </Link>
                   </li>
                   <li>
-                    <Link href={props.data && props.data.instagram ? `/${props.data.instagram}` : "/"}>
+                    <Link href={landingPageData.Contact && landingPageData.Contact.instagram ? `/${landingPageData.Contact.instagram}` : "/"}>
                       <i className="fa fa-instagram"></i>
                     </Link>
                   </li>
                   <li>
-                    <Link href={props.data && props.data.youtube ? `/${props.data.youtube}` : "/"}>
+                    <Link href={landingPageData.Contact && landingPageData.Contact.youtube ? `/${landingPageData.Contact.youtube}` : "/"}>
                       <i className="fa fa-youtube"></i>
                     </Link>
                   </li>

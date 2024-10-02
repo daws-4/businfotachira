@@ -1,6 +1,34 @@
+'use client'
+import { useState, useEffect } from "react";
 import React from "react";
+import JsonData from "@/components/data/data.json";
+  interface LandingPageData {
+    Header: any;
+    Features: any;
+    About: any;
+    Services: any;
+    Gallery: any;
+    Testimonials: any;
+    Team: any;
+    Contact: any;
+  }
 
-export const About = (props:any) => {
+
+
+export const About = () => {
+  const [landingPageData, setLandingPageData] = useState<LandingPageData>({
+    Header: {},
+    Features: [],
+    About: {},
+    Services: [],
+    Gallery: [],
+    Testimonials: [],
+    Team: [],
+    Contact: {},
+  });
+  useEffect(() => {
+    setLandingPageData(JsonData);
+  }, []);
   return (
     <div id="about">
       <div className="container">
@@ -12,13 +40,13 @@ export const About = (props:any) => {
           <div className="col-xs-12 col-md-6">
             <div className="about-text">
               <h2>Nuestro Propósito</h2>
-              <p>{props.data ? props.data.paragraph : "loading..."}</p>
+              <p>{landingPageData.About ? landingPageData.About.paragraph : "loading..."}</p>
               <h3>¿Por qué usar nuestros servicios?</h3>
               <div className="list-style">
                 <div className="col-lg-6 col-sm-6 col-xs-12">
                   <ul>
-                    {props.data && props.data.Why
-                      ? props.data.Why.map((d: any, i: any) => (
+                    {landingPageData.About && landingPageData.About.Why
+                      ? landingPageData.About.Why.map((d: any, i: any) => (
                         <li key={`${d}-${i}`}>{d}</li>
                       ))
                       : "loading"}
@@ -26,8 +54,8 @@ export const About = (props:any) => {
                 </div>
                 <div className="col-lg-6 col-sm-6 col-xs-12">
                   <ul>
-                    {props.data && props.data.Why
-                      ? props.data.Why2.map((d: any, i: any) => (
+                    {landingPageData.About && landingPageData.About.Why
+                      ? landingPageData.About.Why2.map((d: any, i: any) => (
                         <li key={`${d}-${i}`}>{d}</li>
                       ))
                       : "loading"}
