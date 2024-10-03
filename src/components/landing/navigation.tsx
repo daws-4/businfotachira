@@ -2,8 +2,6 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { set } from "mongoose";
-
 export const Navigation = (linea : any) => {
   const [open, setOpen] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -11,8 +9,6 @@ export const Navigation = (linea : any) => {
   const [hidden, setHidden] = useState(false);
   const [data, setData] = useState([]);
   const accordionRef = useRef<HTMLLIElement>(null);
-
-  console.log(data)
   useEffect(() => {
     setData(linea.linea)
     const handleResize = () => {

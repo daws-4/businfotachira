@@ -19,8 +19,7 @@ async function fetchData() {
 
 export default async function Home() {
 
-  const linea = await fetchData(); 
-  console.log(linea)
+  const linea = await fetchData();
 
   return (
     <> <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
