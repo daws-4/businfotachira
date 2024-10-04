@@ -305,7 +305,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className='grid grid-cols-1 md:grid-cols-2'>
                 <h3 className="font-medium text-black dark:text-white">
-                    Horario por Defecto
+                    Horarios diarios
                 </h3>
                 <div hidden={!dataTable.length}>
                         <SelectDate fechas={fechas} onChange={handleFechaChange} fecha={fecha} setFecha={setFecha}></SelectDate>

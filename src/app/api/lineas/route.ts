@@ -35,7 +35,6 @@ export async function GET(request: any) {
     const admins = await lineas.find();
     return NextResponse.json(admins);
   } catch (error) {
-  const admins = await lineas.find();
-  return NextResponse.json(admins);
-}
+    return NextResponse.json((error as Error).message, { status: 400 });
+  }
 }

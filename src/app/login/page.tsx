@@ -67,7 +67,7 @@ export default function Home() {
     }
 
     if (showErrorToast) {
-      toast.error("Correo o Contraseña incorrectos", {
+      toast.error("Nombre de usuario o Contraseña incorrectos", {
         position: "top-center",
         className: "foo-bar",
         autoClose: false

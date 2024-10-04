@@ -8,8 +8,9 @@ export async function POST(request: any) {
   connectDB();
 
   const { username, contraseña } = await request.json();
+  try {
   const result = await lineas.findOne({ username: username });
-  if (
+     if (
     result.length == 0 ||
     !(await bcrypt.compare(contraseña, result.password))
   ) {
@@ -63,4 +64,15 @@ export async function POST(request: any) {
 
     return response;
   }
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "Invalid credentials",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+ 
 }

@@ -87,7 +87,7 @@ export const Navigation = (linea : any) => {
             <ul className="flex flex-col md:flex-row items-center justify-center md:space-x-4">
 
             <li>
-              <Link href="#" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
+              <Link href="/client" className="mx-4 block py-2 lg:py-0 text-white text-3xl">
                 Nuestra App
               </Link>
             </li>

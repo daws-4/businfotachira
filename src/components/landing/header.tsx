@@ -41,7 +41,7 @@ export const Header = () => {
                 </h1>
                 <p>{landingPageData.Header ? landingPageData.Header.paragraph : "Loading"}</p>
                 <a
-                  href="#features"
+                  href="/client"
                   className="btn btn-custom btn-lg page-scroll"
                 >
                  Empezar
