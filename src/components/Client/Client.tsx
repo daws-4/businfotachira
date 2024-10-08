@@ -41,6 +41,8 @@ const Client = (linea:any) => {
                    return 'Guásimos'
                } else if (item.localidad == 4) {
                    return 'Andrés Bello'
+               }else{
+                return 'San Cristóbal'
                }
                return ""; // Add this line to handle undefined values
             });
@@ -60,7 +62,6 @@ const Client = (linea:any) => {
                         text={item.username}
                         rate={localidades[index]}
                     />
-                   
                         </div>
                 )) : 'Cargando...'}
             </div>

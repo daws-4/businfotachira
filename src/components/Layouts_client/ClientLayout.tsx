@@ -5,7 +5,7 @@ import Header from "@/components/Header_client";
 import Link from "next/link";
 import Image from "next/image";
 interface DefaultLayoutProps {
-    params: { linea: any };
+    params?: { linea: any };
     children: React.ReactNode;
 }
 
