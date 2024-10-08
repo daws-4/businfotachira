@@ -11,7 +11,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
-  params: { line: any };
+  params: { lin: any };
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
   const pathname = usePathname();
@@ -49,7 +49,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
           </svg>
         ),
         label: "Cartelera",
-        route: `/client/${params.line}`,
+        route: `/client/${params.lin}/cartelera`,
       },
       {
         icon: (
@@ -67,7 +67,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
           </svg>
         ),
         label: "Rutas",
-        route: `/client/${params.line}/rutas`,
+        route: `/client/${params.lin}/rutas`,
       },
       {
         icon: (
@@ -87,7 +87,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
           </svg>
         ),
         label: "precios",
-        route: `/client/${params.line}/precios`,
+        route: `/client/${params.lin}/precios`,
       },
       {
         icon: (
@@ -117,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
           </svg>
         ),
         label: "Quejas y Sugerencias",
-        route: `/client/${params.line}/qys`,
+        route: `/client/${params.lin}/qys`,
       },
     ],
   },

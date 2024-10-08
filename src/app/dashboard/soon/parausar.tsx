@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import CardData from "@/components/CardData";
 import PrincipalMap from "@/components/mapas/PrincipalMap";
-import { GoogleMapApiLoader } from 'react-google-map-wrapper'
+import { GoogleMapApiLoader } from 'react-google-map-wrapper';
 import axios from "axios";
 import SelectRuta from "@/components/SelectGroup/SelectRuta";
 import { toast } from "react-toastify";

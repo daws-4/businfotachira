@@ -16,14 +16,11 @@ const DropdownUser = ({ params }: { params: { linea: any } }) => {
       const getNow = async () => {
         const cookie = await axios.get("/api/auth/cookie");
         setToken(cookie.data);
-        console.log(cookie.data)
         const data = await axios.get(`/api/lineas/${params.linea}`);
         setUser(data);
-        console.log(data)
       };
       getNow();
     }, [params.linea]);
-    console.log(user)
      const logout = async () => {
      try {
     await axios.get("/api/auth/logout");

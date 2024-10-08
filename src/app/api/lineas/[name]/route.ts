@@ -2,7 +2,6 @@ import { connectDB } from "@/libs/db";
 import { NextResponse } from "next/server";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 import lineas from "@/models/lineas";
 const jwtName = process.env.JWT_NAME;
     if (!jwtName) {

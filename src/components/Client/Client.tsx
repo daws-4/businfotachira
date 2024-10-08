@@ -49,7 +49,6 @@ const Client = (linea:any) => {
             setLocalidades(localidadesTemp.filter(Boolean)); // Filter out empty strings and undefined values
         }
     }, [data]);
-
     return (
         <>
             <div className="grid grid-cols-1 m-5 p-5">
@@ -68,6 +67,5 @@ const Client = (linea:any) => {
         </>
     );
 };
-
 export default Client;
 
