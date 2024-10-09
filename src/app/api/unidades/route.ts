@@ -29,11 +29,9 @@ export async function GET(request: any) {
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
-    jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
   const admins = await unidades.find();
   return NextResponse.json(admins);
   } catch (error) {
-      
       return NextResponse.json((error as Error).message, { status: 400 });
   }
 }

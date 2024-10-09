@@ -35,7 +35,7 @@ const Rutas: React.FC<CarteleraProps> = ({ params, rutas }) => {
           }else if (item.localidad === 4){
             localidad = 'San Cristóbal - Andrés Bello';
           }
-          const urlCard = `/dashboard/${params.lin}/rutas/${item._id}`;
+          const urlCard = `/client/${params.lin}/rutas/${item._id}`;
           const date = new Date(item.createdAt);
           const formattedDate = date.toLocaleString('es-ES', {
           day: '2-digit',

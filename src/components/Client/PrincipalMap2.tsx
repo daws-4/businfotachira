@@ -3,11 +3,11 @@ import React, { useEffect } from 'react';
 import { useMapContext,Control, GoogleMap, Polyline, PinElement, AdvancedMarker, CustomMarker, MarkerClusterer, InfoWindow } from 'react-google-map-wrapper';
 import { useState } from 'react';
 import axios from 'axios';
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Client/Breadcrumb";
 import Image from 'next/image';
 import { ObjectId, Schema } from 'mongoose';
 interface PrincipalMap2Props {
-    params: { linea: any, taru: any, };
+    params: { lin: any, ruts: any, };
     id?:any
     todayData?:any
 }
@@ -51,7 +51,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id, todayData }) 
     useEffect(() => {
         const fetchdata = async () => {
             try {
-                const response = await axios.get(`/api/mapa/${params.taru}`);
+                const response = await axios.get(`/api/mapa/${params.ruts}`);
                 const filteredData = response.data.filter((item: any) => item._id == id);
                 setData(filteredData);
                 if(id){
@@ -63,7 +63,7 @@ const PrincipalMap2: React.FC<PrincipalMap2Props> = ({ params, id, todayData }) 
             }
         }
         fetchdata();
-    }, [id , params.taru]);
+    }, [id , params.ruts]);
 
     const [isOpen, setOpen] = useState<number | null>(null);
     const handleOpen = ( i: number) => {
