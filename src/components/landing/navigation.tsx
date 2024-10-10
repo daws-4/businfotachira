@@ -111,7 +111,7 @@ export const Navigation = (linea : any) => {
                   {data.map((linea: any) => {
                     return (
                       <li key={linea.username}>
-                        <Link href="#info1" className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
+                        <Link href={`client/${linea.username}`} className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
                           {linea.nombre}
                         </Link>
                       </li>
@@ -131,7 +131,7 @@ export const Navigation = (linea : any) => {
                   {data.map((linea: any) => {
                     return (
                       <li key={linea.username}>
-                        <Link href={`${linea.username}`} className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
+                        <Link href={`client/${linea.username}`} className="block p-6 px-4 text-white text-2xl hover:bg-slate-700">
                           {linea.nombre}
                         </Link>
                       </li>

@@ -16,7 +16,6 @@ export async function GET(
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
-       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const adminFound = await precios.findOne({
       _id: params.pri,
     });

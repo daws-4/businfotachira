@@ -30,7 +30,6 @@ export async function GET(request: any) {
   const token: any = cookieStore.get(jwtName as any);
 
   try {
-      jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
   const admins = await precios.find();
   return NextResponse.json(admins);
   } catch (error) {

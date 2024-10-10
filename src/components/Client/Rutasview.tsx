@@ -68,7 +68,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, hor
                 }
 
             } catch (error) {
-               // router.push(`/client/${params.lin}/rutas`);
+               router.push(`/client/${params.lin}/rutas`);
                console.log(error)
             }
             const response2 = await axios.get(`/api/mapa/${params.ruts}`);
@@ -126,6 +126,19 @@ const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, hor
         array_id:any
 
     }
+
+    const customStyles = {
+        headCells: {
+            style: {
+                zindex: "10",
+            },
+        },
+        rows: {
+            style: {
+                zindex: "10",
+            },
+        },
+    };
     const columns = [
         {
             name:'Recorrido',
@@ -227,7 +240,7 @@ const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, hor
                     <PrincipalMap2 todayData={filteredTodayDataTable} id={mapa} params={param} />
                 </GoogleMapApiLoader>
             </div>
-            <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div id='data' className=" px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className='grid grid-cols-1 md:grid-cols-2'>
                 <h3 className="font-medium text-black dark:text-white">
                     Horarios diarios
@@ -236,20 +249,25 @@ const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, hor
                         <SelectDate fechas={fechas} onChange={handleFechaChange} fecha={fecha} setFecha={setFecha}/>
                     </div>
                 </div>
+                <div>
                 {dataTable.length > 0 ? (
+                        <div id='ekizde' className='overflow-x-auto overflow-y-auto'>
                     <DataTable
+                        title="Horarios"
                         paginationPerPage={PperPage ? PperPage : 8}
                         paginationRowsPerPageOptions={PperPage ? [PperPage] : [8]}
                         striped
                         noDataComponent={"Selecciona una fecha"}
                         pagination
-                        responsive
                         columns={columns}
+                        customStyles={customStyles}
                         data={filteredDataTable}
                     />
+                    </div>
                 ) : (
                     <p>No data available</p>
                 )}
+                </div>
             </div>
         </>
     );

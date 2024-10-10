@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import JsonData from "@/components/data/data.json";
 import { Image } from "./image";
 import React from "react";
+import Link from "next/link";
 
 
 
@@ -44,8 +45,9 @@ export const Gallery = () => {
           <div className="portfolio-items">
             {landingPageData.Gallery
               ? landingPageData.Gallery.map((d:any, i:any) => (
+                <Link href={`/client/${d.title}`}
+                  key={`${d.title}-${i}`}>
                   <div
-                    key={`${d.title}-${i}`}
                     className="col-sm-6 col-md-4 col-lg-4"
                   >
                     <Image
@@ -54,6 +56,7 @@ export const Gallery = () => {
                       smallImage={d.smallImage}
                     />
                   </div>
+                </Link>
                 ))
               : "Loading..."}
           </div>
