@@ -9,13 +9,11 @@ const qys = new Schema(
     cedula_identidad: {
       type: String,
       trim: true,
-      unique: true,
     },
     email: {
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
     mensaje: {
       type: String,

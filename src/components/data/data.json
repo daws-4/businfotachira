@@ -20,7 +20,8 @@
   },
   "Gallery": [
     {
-      "title": "Línea Intercomunal N1",
+      "username": "LineaIntercomunal_1",
+      "title": "Línea Intercomunal 01",
       "largeImage": "img/portfolio/01-large.jpg",
       "smallImage": "img/portfolio/01-small.jpg"
     },

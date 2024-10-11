@@ -2,6 +2,8 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+
+
 export const Navigation = (linea : any) => {
   const [open, setOpen] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(false);

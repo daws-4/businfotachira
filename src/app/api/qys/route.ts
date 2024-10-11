@@ -13,14 +13,14 @@ export async function POST(request: any) {
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
-       jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
-    const { id, nombre_usuario, email, mensaje, id_ruta } =
+    const {alias, cedula_identidad, email, mensaje, id_ruta } =
       await request.json();
-    const newUnidad = new qys({ id, nombre_usuario, email, mensaje, id_ruta });
+    const newUnidad = new qys({ alias, cedula_identidad, email, mensaje, id_ruta});
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);
   } catch (error) {
+    console.log(error)
     return NextResponse.json((error as Error).message, { status: 400 });
   }
 }
@@ -29,7 +29,6 @@ export async function GET(request: any) {
   const token: any = cookieStore.get(jwtName as any);
   try {
     
-    jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
   const admins = await qys.find();
   return NextResponse.json(admins);
   } catch (error) {

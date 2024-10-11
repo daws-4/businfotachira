@@ -7,7 +7,7 @@ import Link from "next/link";
 
 
 
-export const Gallery = () => {
+export const Gallery = (linea:any) => {
   interface LandingPageData {
     Header: any;
     Features: any;
@@ -19,6 +19,7 @@ export const Gallery = () => {
     Contact: any;
   }
 
+  const [data, setData] = useState([]);
   const [landingPageData, setLandingPageData] = useState<LandingPageData>({
     Header: {},
     Features: [],
@@ -31,6 +32,8 @@ export const Gallery = () => {
   });
   useEffect(() => {
     setLandingPageData(JsonData);
+    setData(linea.linea)
+    console.log(linea.linea)
   }, []);
   return (
     <div id="portfolio" className="text-center">
@@ -45,14 +48,12 @@ export const Gallery = () => {
           <div className="portfolio-items">
             {landingPageData.Gallery
               ? landingPageData.Gallery.map((d:any, i:any) => (
-                <Link href={`/client/${d.title}`}
+                <Link href={`/client/${d.username}`}
                   key={`${d.title}-${i}`}>
-                  <div
-                    className="col-sm-6 col-md-4 col-lg-4"
-                  >
+                  <div className="col-sm-6 col-md-4 col-lg-4">
                     <Image
                       title={d.title}
-                      largeImage={d.largeImage}
+                      largeImage={`/client/${d.username}`}
                       smallImage={d.smallImage}
                     />
                   </div>

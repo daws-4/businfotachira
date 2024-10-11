@@ -11,7 +11,10 @@ const DropdownUser = () => {
   
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-      <Link href='/#contact'>¿Tienes alguna duda?</Link>
+      <div className="">
+        <Link className="hover:text-blue-500 px-4" href='/#contact'>¿Tienes alguna duda?</Link>
+        <Link className="hover:text-blue-500 px-4" href='/client/qys'>Quejas y Sugerencias</Link>
+      </div>
     </ClickOutside>
   );
 };

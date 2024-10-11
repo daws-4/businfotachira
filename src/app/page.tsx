@@ -65,7 +65,7 @@ export default async function Home() {
         <Header />
         <Features />
         <About />
-        <Gallery />
+        <Gallery linea={linea} />
         <Contact  />
       </div>
 
