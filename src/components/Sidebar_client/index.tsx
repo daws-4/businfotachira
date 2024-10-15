@@ -117,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, params }: SidebarProps) => {
           </svg>
         ),
         label: "Quejas y Sugerencias",
-        route: `/client/${params.lin}/qys`,
+        route: `/client/qys`,
       },
     ],
   },

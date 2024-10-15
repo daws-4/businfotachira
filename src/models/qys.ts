@@ -20,7 +20,7 @@ const qys = new Schema(
       required: true,
       trim: true,
     },
-    id_ruta: {
+    linea: {
       type: String,
       required: true,
       trim: true,

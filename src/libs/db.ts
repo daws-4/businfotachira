@@ -4,7 +4,7 @@ const conn = {
     isConnected: false
 };
 
-mongoose.connection.setMaxListeners(40);
+mongoose.connection.setMaxListeners(60);
 
 export async function connectDB() {
     if (conn.isConnected) {
@@ -18,7 +18,7 @@ export async function connectDB() {
     }
 
     try {
-        const db = await mongoose.connect('mongodb://localhost:27017/businfotachira');
+        const db = await mongoose.connect(dburl);
 
         console.log(`Connected to database: ${db.connection.db?.databaseName}`);
         conn.isConnected = db.connections[0].readyState === 1;

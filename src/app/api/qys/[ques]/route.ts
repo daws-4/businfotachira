@@ -18,7 +18,7 @@ export async function GET(
   try {
        jwt.verify(token.value, process.env.JWT_SECRET as Secret) as JwtPayload;
     const adminFound = await qys.findOne({
-      id: params.ques,
+      _id: params.ques,
     });
     console.log(adminFound);
     if (!adminFound) {
