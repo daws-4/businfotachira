@@ -4,26 +4,18 @@ import CardData from "../CardData";
 import PrincipalMap2 from "@/components/Client/PrincipalMap2";
 import { GoogleMapApiLoader } from 'react-google-map-wrapper'
 import axios from "axios";
-import SelectLocalidad from "@/components/SelectGroup/SelectLocalidad";
 import SelectMapa from "@/components/Client/SelectMapa";
 import SelectDate from "../SelectGroup/SelectDate";
-import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DataTable from 'react-data-table-component';
-import Link from "next/link";
-
 
 
 interface CarteleraProps {
     params: { lin: any, ruts: any };
-    ruta?:any
-    mapas?: any
-    unidade? :any
-    horario?:any
 }
 
-const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, horario }) => {
+const Rutasview: React.FC<CarteleraProps> = ({ params }) => {
     const param = params
     const [fechaUrl, setFechaUrl] = useState<string | null>(null);
     const [fecha, setFecha] = useState<string | null>(null);
@@ -251,11 +243,12 @@ const Rutasview: React.FC<CarteleraProps> = ({ params, ruta, mapas, unidade, hor
                 </div>
                 <div>
                 {dataTable.length > 0 ? (
-                        <div id='ekizde' className='overflow-x-auto overflow-y-auto'>
+                        <div className=' max-w-[250px] lg:max-w-[900px] overflow-x-auto'>
                     <DataTable
                         title="Horarios"
                         paginationPerPage={PperPage ? PperPage : 8}
                         paginationRowsPerPageOptions={PperPage ? [PperPage] : [8]}
+                        responsive
                         striped
                         noDataComponent={"Selecciona una fecha"}
                         pagination

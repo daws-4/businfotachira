@@ -11,7 +11,7 @@ const DropdownUser = () => {
   
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-      <div className="">
+      <div className="py-4 justify-end flex flex-wrap">
         <Link className="hover:text-blue-500 px-4" href='/#contact'>¿Tienes alguna duda?</Link>
         <Link className="hover:text-blue-500 px-4" href='/client/qys'>Quejas y Sugerencias</Link>
       </div>

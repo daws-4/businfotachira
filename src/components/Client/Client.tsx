@@ -51,7 +51,7 @@ const Client = (linea:any) => {
     }, [data]);
     return (
         <>
-            <div className="grid grid-cols-1 m-5 p-5">
+            <div className="grid grid-cols-1">
                 {data ? data.map((item: any, index: number) => (
                     <div className="p-5" key={item._id}>
                     <CardDataStats
