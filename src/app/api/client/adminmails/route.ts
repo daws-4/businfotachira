@@ -5,8 +5,8 @@ connectDB();
 
 export async function POST(request: any) {
   try {
-    const { alias, cedula_identidad, email, mensaje} = await request.json();
-    const newAdmin = new adminmails({ alias, cedula_identidad, email, mensaje });
+    const { alias, cedula_identidad, email, mensaje, linea} = await request.json();
+    const newAdmin = new adminmails({ alias, cedula_identidad, email, mensaje, linea });
     const savedAdmin = await newAdmin.save();
     console.log(savedAdmin);
     return NextResponse.json(savedAdmin);

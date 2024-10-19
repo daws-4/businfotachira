@@ -13,9 +13,9 @@ export async function POST(request: any) {
   const cookieStore = cookies();
   const token: any = cookieStore.get(jwtName as any);
   try {
-    const {alias, cedula_identidad, email, mensaje, id_ruta } =
+    const {alias, cedula_identidad, email, mensaje, linea } =
       await request.json();
-    const newUnidad = new qys({ alias, cedula_identidad, email, mensaje, id_ruta});
+    const newUnidad = new qys({ alias, cedula_identidad, email, mensaje, linea});
     const savedUnidad = await newUnidad.save();
     console.log(savedUnidad);
     return NextResponse.json(savedUnidad);

@@ -39,7 +39,7 @@ const Qyspost = () => {
                     cedula_identidad: c_identidad,
                     email: email,
                     mensaje: description,
-                    id_ruta: destinatario,
+                    linea: destinatario,
                 });
                 console.log(response)
                 toast.success("Ruta agregada exitosamente");
