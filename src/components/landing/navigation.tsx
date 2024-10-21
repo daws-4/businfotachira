@@ -32,7 +32,7 @@ export const Navigation = (linea : any) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [linea.linea]);
 
 
 

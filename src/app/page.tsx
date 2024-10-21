@@ -6,6 +6,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 export const metadata: Metadata = {
   title:
     "BusInfoTáchira - App de transporte público para el estado Táchira, Venezuela",
@@ -70,8 +71,6 @@ export default async function Home() {
       </div>
 
       <ToastContainer />
-      <script type="text/javascript" src="js/jquery.1.11.1.js"></script   >
-      <script type="text/javascript" src="js/bootstrap.js"></script>
       </>
     
   );

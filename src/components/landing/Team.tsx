@@ -1,6 +1,6 @@
 import React from "react";
-
-export const Team = (props) => {
+import Image from "next/image";
+export const Team = (props:any) => {
   return (
     <div id="team" className="text-center">
       <div className="container">
@@ -13,11 +13,11 @@ export const Team = (props) => {
         </div>
         <div id="row">
           {props.data
-            ? props.data.map((d, i) => (
+            ? props.data.map((d:any, i:any) => (
                 <div key={`${d.name}-${i}`} className="col-md-3 col-sm-6 team">
                   <div className="thumbnail">
                     {" "}
-                    <img src={d.img} alt="..." className="team-img" />
+                    <Image src={d.img} alt="..." className="team-img" />
                     <div className="caption">
                       <h4>{d.name}</h4>
                       <p>{d.job}</p>

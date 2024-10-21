@@ -16,7 +16,7 @@ const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
     const [polilyne, setPolilyne] = useState<any>([]);
     const param = params
 
-    const memoizedOnChangePdr = useCallback(onChangePdr, []);
+    const memoizedOnChangePdr = useCallback(onChangePdr, [onChangePdr]);
 
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import React from "react";
 import JsonData from "@/components/data/data.json";
   interface LandingPageData {
@@ -35,7 +36,7 @@ export const About = () => {
         <div className="row">
           <div className="col-xs-12 col-md-6">
             {" "}
-            <img src="img/about.jpg" className="img-responsive" alt="" />{" "}
+            <Image src="/img/about.jpg" className="img-responsive" alt=""  width={400} height={400}/>{" "}
           </div>
           <div className="col-xs-12 col-md-6">
             <div className="about-text">

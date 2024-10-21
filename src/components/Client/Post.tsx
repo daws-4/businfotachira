@@ -25,7 +25,7 @@ const Post: React.FC<CarteleraProps> = ({ params, post }) => {
       }
         };
         fetchData();
-    }, [params.cart, params.lin, router]);
+    }, [params.cart, params.lin, router, post]);
     useEffect(() => {
         if (data.id && params.cart != data._id) {
             router.push(`/client/${params.lin}`);

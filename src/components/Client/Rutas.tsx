@@ -20,7 +20,7 @@ const Rutas: React.FC<CarteleraProps> = ({ params, rutas }) => {
       setData(JSON.parse(rutas));
   };
    fetchData();
-}, [params.lin]);
+}, [params.lin, rutas]);
   return (
     <>
       <div className="pb-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5">

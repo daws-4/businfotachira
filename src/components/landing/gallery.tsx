@@ -34,7 +34,7 @@ export const Gallery = (linea:any) => {
     setLandingPageData(JsonData);
     setData(linea.linea)
     console.log(linea.linea)
-  }, []);
+  }, [linea.linea]);
   return (
     <div id="portfolio" className="text-center">
       <div className="container">
