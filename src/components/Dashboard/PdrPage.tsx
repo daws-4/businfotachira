@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation";
 
 interface CarteleraProps {
     params: { linea: any, pd: any };
+    pdrData: any
 }
 
-const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
+const PdrPage: React.FC<CarteleraProps> = ({ params, pdrData }) => {
     const param = params
 
     const [data, setData] = useState<any>([]);
@@ -35,7 +36,7 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
         if (params.pd && params.linea) {
             fetchData();
         }
-    }, [params.pd, params.linea, router]);
+    }, [params.pd, params.linea]);
 
     const handlePdrChange = (data: any[]) => {
         const updatedPdr = data.map((item: any, index: number) => ({
@@ -87,7 +88,7 @@ const PdrPage: React.FC<CarteleraProps> = ({ params }) => {
         <>
             <div className=" w-full px-7.5 py-6 mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <GoogleMapApiLoader v="beta" apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}>
-                    <PdrMap params={param} onChangePdr={handlePdrChange} />
+                    <PdrMap data={pdrData} params={param} onChangePdr={handlePdrChange} />
                 </GoogleMapApiLoader>
                 <button
                     onClick={handlePdrButton}

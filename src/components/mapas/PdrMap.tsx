@@ -7,36 +7,39 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 interface PdrMapProps {
     onChangePdr: (data: any[]) => void;
     params: { linea: any, pd: any };
+    data?: any
 
 }
-const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params }) => {
+const PdrMap: React.FC<PdrMapProps> = ({ onChangePdr, params, data }) => {
+    const mapData = JSON.parse(data);
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [markers, setMarkers] = useState<any>([]);
     const [polilyne, setPolilyne] = useState<any>([]);
     const param = params
 
-    const memoizedOnChangePdr = useCallback(onChangePdr, [onChangePdr]);
+    const memorizedOnChangePdr = useCallback(onChangePdr, [onChangePdr]);
 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/mapas/${param.pd}`);
-                setPolilyne(response.data.polilyne);
-                setMarkers(response.data.pdr);
-                memoizedOnChangePdr(response.data.pdr);
+               
+                console.log(mapData)
+                setPolilyne(mapData.polilyne);
+                setMarkers(mapData.pdr);
+                memorizedOnChangePdr(mapData.pdr);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        if (param.pd) {
+        if (mapData) {
             fetchData();
         }
-    }, [param.pd, memoizedOnChangePdr]);
+    }, []);
 
-    const handleMarkerClick = () => {
+    const handleMarkerClick: () => void = () => {
         window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
     };
 
